@@ -45,24 +45,24 @@ class TestGroundStation(unittest.TestCase):
         self.assertEqual(o.latitude, 40.5974791834978)
         self.assertEqual(o.longitude, -104.83875274658203)
         self.assertEqual(o.elevation, 1570)
-        self.assertItemsEqual(o.commBand, ["X"])
+        self.assertEqual(o.commBand, ["X"])
         self.assertEqual(o._type, "GroundStation")
         self.assertIsNone(o._id)
     def test_from_json_comm_list(self):
         o = GroundStation.from_json('{"name": "Test", "commBand": ["X","S"]}')
-        self.assertItemsEqual(o.commBand, ["X","S"])
+        self.assertEqual(sorted(o.commBand), sorted(["X","S"]))
     def test_to_json_basic(self):
         d = json.loads(GroundStation(name="Test", latitude=40.5974791834978, longitude=-104.83875274658203, elevation=1570, commBand=["X"]).to_json())
         self.assertEqual(d.get("name"), "Test")
         self.assertEqual(d.get("latitude"), 40.5974791834978)
         self.assertEqual(d.get("longitude"), -104.83875274658203)
         self.assertEqual(d.get("elevation"), 1570)
-        self.assertItemsEqual(d.get("commBand"), ["X"])
+        self.assertEqual(d.get("commBand"), ["X"])
         self.assertEqual(d.get("@type"), "GroundStation")
         self.assertIsNone(d.get("@id"))
     def test_to_json_comm_list(self):
         d = json.loads(GroundStation(name="Test", commBand=["X","S"]).to_json())
-        self.assertItemsEqual(d.get("commBand"), ["X","S"])
+        self.assertEqual(sorted(d.get("commBand")), sorted(["X","S"]))
 
 class TestGroundNetwork(unittest.TestCase):
     def test_from_json_basic(self):
@@ -96,4 +96,4 @@ class TestGroundNetwork(unittest.TestCase):
         self.assertEqual(len(list(o)), 3)
         for i in o:
             self.assertIsInstance(i, GroundNetwork)
-        self.assertItemsEqual([i.numberStations for i in o], [1,2,3])
+        self.assertEqual(sorted([i.numberStations for i in o]), sorted([1,2,3]))

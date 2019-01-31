@@ -22,7 +22,7 @@ class TestSatellite(unittest.TestCase):
     def test_from_json_comm_list(self):
         o = Satellite.from_json('{"name": "Landsat 8", "mass": 2750, "volume": 43.2, "power": 1550, "commBand": ["X","S"]}')
         self.assertIsInstance(o.commBand, list)
-        self.assertItemsEqual(o.commBand, ["X","S"])
+        self.assertEqual(sorted(o.commBand), sorted(["X","S"]))
     def test_from_json_id(self):
         o = Satellite.from_json('{"@id": "landsat-8", "name": "Landsat 8", "mass": 2750, "volume": 43.2, "power": 1550, "commBand": ["X"]}')
         self.assertEqual(o._id, "landsat-8")
@@ -38,7 +38,7 @@ class TestSatellite(unittest.TestCase):
     def test_to_json_comm_list(self):
         d = json.loads(Satellite(name="Landsat 8", mass=2750, volume=43.2, power=1550, commBand=["X","S"]).to_json())
         self.assertIsInstance(d.get("commBand"), list)
-        self.assertItemsEqual(d.get("commBand"), ["X","S"])
+        self.assertEqual(sorted(d.get("commBand")), sorted(["X","S"]))
     def test_to_json_id(self):
         d = json.loads(Satellite(_id="landsat-8", name="Landsat 8", mass=2750, volume=43.2, power=1550, commBand=["X"]).to_json())
         self.assertEqual(d.get("@id"), "landsat-8")
@@ -105,8 +105,8 @@ class TestOrbitSunSynchronous(unittest.TestCase):
         self.assertEqual(len(list(o)), 5)
         for i in range(5):
             self.assertIsInstance(list(o)[i], Orbit)
-        self.assertItemsEqual([i.altitude for i in list(o)], [405,430,455,480,505])
-        self.assertItemsEqual([i.inclination for i in list(o)], [Orbit.get_sso_inclination(a) for a in [405,430,455,480,505]])
+        self.assertEqual(sorted([i.altitude for i in list(o)]), sorted([405,430,455,480,505]))
+        self.assertEqual(sorted([i.inclination for i in list(o)]), sorted([Orbit.get_sso_inclination(a) for a in [405,430,455,480,505]]))
 
 class TestOrbitKeplerian(unittest.TestCase):
     def test_from_json(self):
@@ -193,8 +193,8 @@ class TestOrbitCircular(unittest.TestCase):
         self.assertEqual(len(list(o)), 5)
         for i in range(5):
             self.assertIsInstance(list(o)[i], Orbit)
-        self.assertItemsEqual([i.altitude for i in list(o)], [405,430,455,480,505])
-        self.assertItemsEqual([i.inclination for i in list(o)], [51.6,51.6,51.6,51.6,51.6])
+        self.assertEqual(sorted([i.altitude for i in list(o)]), sorted([405,430,455,480,505]))
+        self.assertEqual(sorted([i.inclination for i in list(o)]), sorted([51.6,51.6,51.6,51.6,51.6]))
     def test_iter_product(self):
         o = Orbit(altitude=QuantitativeRange(405,505,stepSize=50),inclination=QuantitativeRange(50,55))
         self.assertEqual(len(list(o)), 3*2)
@@ -225,8 +225,8 @@ class TestConstellationDeltaHomogeneous(unittest.TestCase):
         self.assertEqual(o.numberPlanes.maxValue, 2)
     def test_from_json_list_range(self):
         o = Constellation.from_json('{"constellationType": "DELTA_HOMOGENOUS", "numberSatellites": [1, 2, 3], "numberPlanes": [1, 2], "orbit": {"altitude": 405, "inclination": 51.64}}')
-        self.assertItemsEqual(o.numberSatellites, [1, 2, 3])
-        self.assertItemsEqual(o.numberPlanes, [1, 2])
+        self.assertEqual(sorted(o.numberSatellites), sorted([1, 2, 3]))
+        self.assertEqual(sorted(o.numberPlanes), sorted([1, 2]))
     def test_from_json_orbit_range(self):
         o = Constellation.from_json('{"constellationType": "DELTA_HOMOGENOUS", "numberSatellites": 2, "numberPlanes": 2, "orbit": [{"orbitType": "circular", "altitude": 405, "inclination": 51.64},{"orbitType": "sun_synchronous", "altitude": 500}]}')
         self.assertIsInstance(o.orbit, list)
@@ -267,7 +267,7 @@ class TestConstellationDeltaHomogeneous(unittest.TestCase):
         self.assertEqual(len(list(o)), 2)
         for i in range(2):
             self.assertIsInstance(list(o)[i], Constellation)
-        self.assertItemsEqual([i.numberSatellites for i in o], [1,2])
+        self.assertEqual(sorted([i.numberSatellites for i in o]), sorted([1,2]))
     def test_iter_number_planes(self):
         o = Constellation(numberSatellites=[1,2], numberPlanes=[1,2])
         self.assertEqual(len(list(o)), 3)

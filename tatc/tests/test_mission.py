@@ -43,7 +43,7 @@ class TestMissionConcept(unittest.TestCase):
         self.assertEqual(d.get("target").get("latitude").get("maxValue"), 45)
         self.assertEqual(d.get("target").get("longitude").get("minValue"), -115)
         self.assertEqual(d.get("target").get("longitude").get("maxValue"), -100)
-        self.assertItemsEqual(d.get("objects"), ["SUN"])
+        self.assertEqual(d.get("objects"), ["SUN"])
     def test_to_json_numeric_duration(self):
         d = json.loads(MissionConcept(start="2017-08-01T00:00:00Z", duration=90).to_json())
         self.assertEqual(isodate.parse_duration(d.get("duration")), datetime.timedelta(days=90))

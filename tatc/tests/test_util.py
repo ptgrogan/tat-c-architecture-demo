@@ -48,8 +48,8 @@ class TestCommunicationBnd(unittest.TestCase):
         self.assertIsNone(CommunicationBand.get("missing"), None)
         self.assertEqual(CommunicationBand.get(None), None)
     def test_get_list(self):
-        self.assertItemsEqual(CommunicationBand.get(["X","S"]),
-            [CommunicationBand.X, CommunicationBand.S])
+        self.assertEqual(sorted(CommunicationBand.get(["X","S"])),
+            sorted([CommunicationBand.X, CommunicationBand.S]))
 
 class TestQuantitativeValue(unittest.TestCase):
     def test_from_json(self):
@@ -68,7 +68,7 @@ class TestQuantitativeValue(unittest.TestCase):
         self.assertEqual(o, 27)
     def test_iter(self):
         o = QuantitativeValue(minValue=5, maxValue=10)
-        self.assertItemsEqual(list(o), [5, 10])
+        self.assertEqual(sorted(list(o)), sorted([5, 10]))
 
 class TestQuantitativeRange(unittest.TestCase):
     def test_from_json_step(self):
@@ -107,19 +107,19 @@ class TestQuantitativeRange(unittest.TestCase):
         self.assertEqual(o, 27)
     def test_iter_integer_steps_size(self):
         o = QuantitativeRange.from_json('{"minValue": 1, "maxValue": 10, "stepSize": 1}')
-        self.assertItemsEqual(list(o), [1,2,3,4,5,6,7,8,9,10])
+        self.assertEqual(sorted(list(o)), sorted([1,2,3,4,5,6,7,8,9,10]))
     def test_iter_fractional_steps_size(self):
         o = QuantitativeRange.from_json('{"minValue": 1, "maxValue": 5, "stepSize": 0.5}')
-        self.assertItemsEqual(list(o), [1,1.5,2,2.5,3,3.5,4,4.5,5])
+        self.assertEqual(sorted(list(o)), sorted([1,1.5,2,2.5,3,3.5,4,4.5,5]))
     def test_iter_fractional_steps_size_no_end(self):
         o = QuantitativeRange.from_json('{"minValue": 1, "maxValue": 5.25, "stepSize": 0.5}')
-        self.assertItemsEqual(list(o), [1,1.5,2,2.5,3,3.5,4,4.5,5])
+        self.assertEqual(sorted(list(o)), sorted([1,1.5,2,2.5,3,3.5,4,4.5,5]))
     def test_iter_integer_steps_number(self):
         o = QuantitativeRange.from_json('{"minValue": 1, "maxValue": 10, "numberSteps": 10}')
-        self.assertItemsEqual(list(o), [1,2,3,4,5,6,7,8,9,10])
+        self.assertEqual(sorted(list(o)), sorted([1,2,3,4,5,6,7,8,9,10]))
     def test_iter_fractional_steps_number(self):
         o = QuantitativeRange.from_json('{"minValue": 1, "maxValue": 5, "numberSteps":9}')
-        self.assertItemsEqual(list(o), [1,1.5,2,2.5,3,3.5,4,4.5,5])
+        self.assertEqual(sorted(list(o)), sorted([1,1.5,2,2.5,3,3.5,4,4.5,5]))
     def test_iter_end_points(self):
         o = QuantitativeRange.from_json('{"minValue": 1, "maxValue": 5}')
-        self.assertItemsEqual(list(o), [1,5])
+        self.assertEqual(sorted(list(o)), sorted([1,5]))
