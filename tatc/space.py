@@ -131,19 +131,19 @@ class Orbit(Entity):
         self.orbitType = OrbitType.get(orbitType)
         self.altitude = altitude
         # compute and assign special inclination for sun-synchronous orbits
-        if isinstance(self.altitude, Number) and (inclination is "SSO" or self.orbitType is OrbitType.SUN_SYNCHRONOUS):
+        if isinstance(self.altitude, Number) and (inclination == "SSO" or self.orbitType == OrbitType.SUN_SYNCHRONOUS):
             self.inclination = Orbit.get_sso_inclination(self.altitude)
         else: self.inclination = inclination
         self.semimajorAxis = semimajorAxis
         # assign 0 eccentricity for circular orbits
-        if self.orbitType is OrbitType.CIRCULAR or self.orbitType is OrbitType.SUN_SYNCHRONOUS:
+        if self.orbitType == OrbitType.CIRCULAR or self.orbitType == OrbitType.SUN_SYNCHRONOUS:
             self.eccentricity = 0.0
         # assign 0 eccentricity for Keplerian orbits with missing information
-        elif self.orbitType is OrbitType.KEPLERIAN and eccentricity is None:
+        elif self.orbitType == OrbitType.KEPLERIAN and eccentricity is None:
             self.eccentricity = 0.0
         else: self.eccentricity = eccentricity
         # assign 0 periapsis arg for Keplerian orbits with missing information
-        if self.orbitType is OrbitType.KEPLERIAN and periapsisArgument is None:
+        if self.orbitType == OrbitType.KEPLERIAN and periapsisArgument is None:
             self.periapsisArgument = 0.0
         else: self.periapsisArgument = periapsisArgument
         self.rightAscensionAscendingNode = rightAscensionAscendingNode
@@ -273,19 +273,19 @@ class Constellation(Entity):
         self.constellationType = ConstellationType.get(constellationType)
         self.numberSatellites = numberSatellites
         # assign default value of 1 plane for delta constellations
-        if numberPlanes is None and (self.constellationType is ConstellationType.DELTA_HOMOGENOUS
-                or self.constellationType is ConstellationType.DELTA_HETEROGENEOUS):
+        if numberPlanes is None and (self.constellationType == ConstellationType.DELTA_HOMOGENOUS
+                or self.constellationType == ConstellationType.DELTA_HETEROGENEOUS):
             self.numberPlanes = 1
         else: self.numberPlanes = numberPlanes
 
         # assign default relative spacing value for delta constellations
         if relativeSpacing is None and isinstance(self.numberPlanes, Number) and (
-                self.constellationType is ConstellationType.DELTA_HOMOGENOUS
-                or self.constellationType is ConstellationType.DELTA_HETEROGENEOUS):
+                self.constellationType == ConstellationType.DELTA_HOMOGENOUS
+                or self.constellationType == ConstellationType.DELTA_HETEROGENEOUS):
             # assign relative spacing of 1 for multi-plane sun-synchronous constellations
             if isinstance(orbit, Orbit) and self.numberPlanes > 1 and (
-                    orbit.orbitType is OrbitType.SUN_SYNCHRONOUS
-                    or orbit.inclination is "SSO"):
+                    orbit.orbitType == OrbitType.SUN_SYNCHRONOUS
+                    or orbit.inclination == "SSO"):
                 self.relativeSpacing = 1
             # otherwise assign relative spacing of 0
             else: self.relativeSpacing = 0
@@ -321,7 +321,7 @@ class Constellation(Entity):
 
     def generate_constellations(self, satellites):
         """Generates constellations for a given set of satellites."""
-        if self.constellationType is ConstellationType.DELTA_HOMOGENOUS:
+        if self.constellationType == ConstellationType.DELTA_HOMOGENOUS:
             constellations = []
             # generate one constellation iteration per satellite
             for constellation in self:
@@ -340,7 +340,7 @@ class Constellation(Entity):
                         )
                     )
             return constellations
-        elif self.constellationType is ConstellationType.DELTA_HETEROGENEOUS:
+        elif self.constellationType == ConstellationType.DELTA_HETEROGENEOUS:
             # generate one constellation iteration per satellite combination
             constellations = []
             for constellation in self:

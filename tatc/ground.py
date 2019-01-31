@@ -116,7 +116,7 @@ class GroundNetwork(Entity):
             # valid stations must have compatible agency types
             validStations = [station for station in groundStations
                     if network.agency is None or
-                    (station.agency is not None and station.agency.agencyType is network.agency.agencyType)]
+                    (station.agency is not None and station.agency.agencyType == network.agency.agencyType)]
             # iterate over all possible combinations of valid stations
             for selectedStations in itertools.combinations(validStations, network.numberStations):
                 # append a new network
