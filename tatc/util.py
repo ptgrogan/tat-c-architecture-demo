@@ -75,7 +75,7 @@ class Entity(object):
         # convert json string or file to dictionary (if necessary)
         if isinstance(json_doc, str):
             json_doc = json.loads(json_doc)
-        elif isinstance(json_doc, file):
+        elif hasattr(json_doc, 'read'):
             json_doc = json.load(json_doc)
         # if pre-formatted, return directly
         if (json_doc is None or isinstance(json_doc, Number) or isinstance(json_doc, Entity)):
