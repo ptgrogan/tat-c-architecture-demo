@@ -14,12 +14,12 @@ __maintainer__ = "Paul Grogan"
 __email__ = "pgrogan@stevens.edu"
 __status__ = "Prototype"
 
-from util import *
-from agency import *
-from space import *
-from ground import *
-from launch import *
-from instrument import *
-from mission import *
-from analysis import *
-from resources import *
+from .util import *
+from .agency import *
+from .space import *
+from .ground import *
+from .launch import *
+from .instrument import *
+from .mission import *
+from .analysis import *
+from .resources import *
