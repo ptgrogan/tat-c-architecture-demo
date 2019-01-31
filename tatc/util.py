@@ -50,7 +50,7 @@ class Entity(object):
                     d[key] = value.to_dict()
                 # else if list, recursively serialize each list element
                 elif isinstance(value, list):
-                    d[key] = map(recursive_normalize, value)
+                    d[key] = list(map(recursive_normalize, value))
                 # otherwise recursively call function
                 else: recursive_normalize(value)
             return d
@@ -82,7 +82,7 @@ class Entity(object):
             return json_doc
         # if list, recursively parse each element and return mapped list
         if isinstance(json_doc, list):
-            return map(lambda e: cls.from_json(e), json_doc)
+            return list(map(lambda e: cls.from_json(e), json_doc))
         # otherwise use class method to initialize from normalized dictionary
         return cls.from_dict(json_doc)
 
@@ -135,7 +135,7 @@ class CommunicationBand(str, Enum):
         if isinstance(key, CommunicationBand):
             return key
         elif isinstance(key, list):
-            return map(lambda e: CommunicationBand.get(e), key)
+            return list(map(lambda e: CommunicationBand.get(e), key))
         else:
             try: return CommunicationBand(key.upper())
             except: return None

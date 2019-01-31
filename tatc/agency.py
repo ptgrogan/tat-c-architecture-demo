@@ -21,7 +21,7 @@ class AgencyType(str, Enum):
         if isinstance(key, AgencyType):
             return key
         elif isinstance(key, list):
-            return map(lambda e: AgencyType.get(e), key)
+            return list(map(lambda e: AgencyType.get(e), key))
         else:
             try: return AgencyType(key.upper())
             except: return None

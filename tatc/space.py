@@ -76,7 +76,7 @@ class OrbitType(str, Enum):
         if isinstance(key, OrbitType):
             return key
         elif isinstance(key, list):
-            return map(lambda e: OrbitType.get(e), key)
+            return list(map(lambda e: OrbitType.get(e), key))
         else:
             try: return OrbitType(key.upper())
             except: return None
@@ -232,7 +232,7 @@ class ConstellationType(str, Enum):
         if isinstance(key, ConstellationType):
             return key
         elif isinstance(key, list):
-            return map(lambda e: ConstellationType.get(e), key)
+            return list(map(lambda e: ConstellationType.get(e), key))
         else:
             try: return ConstellationType(key.upper())
             except: return None
