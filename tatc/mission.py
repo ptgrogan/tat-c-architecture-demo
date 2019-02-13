@@ -100,6 +100,7 @@ class MissionObjective(Entity):
         self.weight = weight
         self.type = ObjectiveType.get(type)
         self.target = target
+        super(MissionObjective,self).__init__(_id, "MissionObjective")
 
     @staticmethod
     def from_dict(d):
