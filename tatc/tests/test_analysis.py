@@ -23,10 +23,17 @@ class TestTradespaceSearch(unittest.TestCase):
 
 class TestAnalysisSettings(unittest.TestCase):
     def test_from_json_basic(self):
-        o = AnalysisSettings.from_json('{"propagationFidelity": 1, "includePropulsion": true}')
+        o = AnalysisSettings.from_json('{"propagationFidelity": 1, "includePropulsion": true, "searchStrategy": "KDO", "searchParameters": {}}')
         self.assertEqual(o.propagationFidelity, 1)
         self.assertEqual(o.includePropulsion, True)
+        self.assertEqual(o.searchStrategy, SearchStrategy.KDO)
+        self.assertIsInstance(o.searchParameters, SearchParameters)
     def test_to_json_basic(self):
-        d = json.loads(AnalysisSettings(propagationFidelity=1, includePropulsion=True).to_json())
+        d = json.loads(AnalysisSettings(propagationFidelity=1, includePropulsion=True, searchStrategy="KDO", searchParameters=SearchParameters()).to_json())
         self.assertEqual(d.get("propagationFidelity"), 1)
         self.assertEqual(d.get("includePropulsion"), True)
+        self.assertEqual(d.get("searchStrategy"), "KDO")
+        self.assertEqual(d.get("searchParameters").get("@type"), "SearchParameters")
+
+class TestSearchParameters(unittest.TestCase):
+    pass #TODO
