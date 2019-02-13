@@ -30,10 +30,12 @@ class MissionConcept(Entity):
         target      Target region of interest for mission objectives.
         objects     List of mission interest objects. Recognized values
                     include: SUN, MOON.
+        objectives  List of mission objectives.
     """
 
     def __init__(self, name=None, acronym=None, agency=None, start=None,
-                 end=None, duration=None, target=None, objects=None, _id=None):
+                 end=None, duration=None, target=None, objects=None,
+                 objectives=None, _id=None):
         """Initialize a mission concept object.
         """
         self.name = name
@@ -53,6 +55,9 @@ class MissionConcept(Entity):
         # convert objects to list, if necessary
         if isinstance(objects, str): self.objects = [objects]
         else: self.objects = objects
+        # convert objectives to list, if necessary
+        if isinstance(objectives, str): self.objectives = [objectives]
+        else: self.objectives = objectives
         super(MissionConcept, self).__init__(_id, "MissionConcept")
 
     @staticmethod
@@ -67,6 +72,7 @@ class MissionConcept(Entity):
                 duration = d.get("duration", None),
                 target = Region.from_json(d.get("target", None)),
                 objects = d.get("objects", None),
+                objectives = d.get("objectives", None),
                 _id = d.get("@id", None)
             )
 

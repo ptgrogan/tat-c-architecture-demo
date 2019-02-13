@@ -13,7 +13,7 @@ from tatc import *
 
 class TestMissionConcept(unittest.TestCase):
     def test_from_json_basic(self):
-        o = MissionConcept.from_json('{"name": "Sustainable Land Imaging", "acronym": "SLI", "agency": {"agencyType": "Government"}, "start": "2017-08-01T00:00:00Z", "duration": "P0Y0M90D", "target": {"latitude": {"minValue": 35, "maxValue": 45}, "longitude": {"minValue": -115, "maxValue": -100}}, "objects": ["SUN"]}')
+        o = MissionConcept.from_json('{"name": "Sustainable Land Imaging", "acronym": "SLI", "agency": {"agencyType": "Government"}, "start": "2017-08-01T00:00:00Z", "duration": "P0Y0M90D", "target": {"latitude": {"minValue": 35, "maxValue": 45}, "longitude": {"minValue": -115, "maxValue": -100}}, "objects": ["SUN"], "objectives": ["test"]}')
         self.assertEqual(o.name, "Sustainable Land Imaging")
         self.assertEqual(o.acronym, "SLI")
         self.assertIsInstance(o.agency, Agency)
@@ -29,11 +29,12 @@ class TestMissionConcept(unittest.TestCase):
         self.assertEqual(o.target.longitude.minValue, -115)
         self.assertEqual(o.target.longitude.maxValue, -100)
         self.assertEqual(o.objects, ["SUN"])
+        self.assertEqual(o.objectives, ["test"])
     def test_from_json_numeric_duration(self):
         o = MissionConcept.from_json('{"start": "2017-08-01T00:00:00Z", "duration": 90}')
         self.assertEqual(isodate.parse_duration(o.duration), datetime.timedelta(days=90))
     def test_to_json_basic(self):
-        d = json.loads(MissionConcept(name="Sustainable Land Imaging", acronym="SLI", agency=Agency(agencyType=AgencyType.GOVERNMENT), start="2017-08-01T00:00:00Z", duration="P0Y0M90D", target=Region(latitude=QuantitativeValue(minValue=35,maxValue=45), longitude=QuantitativeValue(minValue=-115, maxValue=-100)), objects=["SUN"]).to_json())
+        d = json.loads(MissionConcept(name="Sustainable Land Imaging", acronym="SLI", agency=Agency(agencyType=AgencyType.GOVERNMENT), start="2017-08-01T00:00:00Z", duration="P0Y0M90D", target=Region(latitude=QuantitativeValue(minValue=35,maxValue=45), longitude=QuantitativeValue(minValue=-115, maxValue=-100)), objects=["SUN"], objectives=["test"]).to_json())
         self.assertEqual(d.get("name"), "Sustainable Land Imaging")
         self.assertEqual(d.get("acronym"), "SLI")
         self.assertEqual(d.get("agency").get("agencyType"), "GOVERNMENT")
@@ -44,6 +45,7 @@ class TestMissionConcept(unittest.TestCase):
         self.assertEqual(d.get("target").get("longitude").get("minValue"), -115)
         self.assertEqual(d.get("target").get("longitude").get("maxValue"), -100)
         self.assertEqual(d.get("objects"), ["SUN"])
+        self.assertEqual(d.get("objectives"), ["test"])
     def test_to_json_numeric_duration(self):
         d = json.loads(MissionConcept(start="2017-08-01T00:00:00Z", duration=90).to_json())
         self.assertEqual(isodate.parse_duration(d.get("duration")), datetime.timedelta(days=90))
