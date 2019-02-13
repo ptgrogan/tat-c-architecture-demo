@@ -1,6 +1,8 @@
 from tatc import *
+import argparse
 
-def main():
+def build_example_tradespace_search():
+    """ Builds an example TradespaceSearch based on SLI mission."""
     mission = MissionConcept(
         name="Sustainable Land Imaging - Landsat 8",
         acronym="SLI-Landsat8",
@@ -80,11 +82,16 @@ def main():
     )
     settings = AnalysisSettings(propagationFidelity=0, includePropulsion=False)
     search = TradespaceSearch(mission=mission, designSpace=designSpace, settings=settings)
-    with open('landsat8.json', 'w') as outfile:
-        search.to_json(outfile, indent=2)
-    for i, architecture in enumerate(designSpace.generate_architectures()):
-        with open('landsat8-{:05d}.json'.format(i), 'w') as outfile:
-            architecture.to_json(outfile, indent=2)
+    return search
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description='Writes an example tradespace search file')
+    parser.add_argument(
+        'outfile',
+        nargs = '?',
+        type = argparse.FileType('w'),
+        default = 'landsat8.json',
+        help = "Tradespace search output file"
+    )
+    args = parser.parse_args()
+    build_example_tradespace_search().to_json(args.outfile, indent=2)
