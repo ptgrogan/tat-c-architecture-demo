@@ -7,6 +7,7 @@
 import json
 import isodate
 import datetime
+from enum import Enum
 from numbers import Number
 import itertools
 
@@ -72,9 +73,62 @@ class MissionConcept(Entity):
                 duration = d.get("duration", None),
                 target = Region.from_json(d.get("target", None)),
                 objects = d.get("objects", None),
-                objectives = d.get("objectives", None),
+                objectives = MissionObjective.from_json(d.get("objectives", None)),
                 _id = d.get("@id", None)
             )
+
+class MissionObjective(Entity):
+    """A variable to be maximized or minimized to acheive mission objectives.
+
+    Attributes:
+        name        The full name of this objective.
+        parent      The full name of the parent objective.
+        weight      Weight or importance of this metric, ranging between 0 to inf
+        type        Type of metric. Recognized case-insensitive values include:
+                        MAX (maximize)
+                        MIN (minimize)
+                        TAR (target)
+        Target      Target value for the objective. Required for TAR type only.
+    """
+
+    def __init__(self, name=None, parent=None, weight=None, type=None,
+            target=None, _id=None):
+        """Initialize a mission objective.
+        """
+        self.name = name
+        self.parent = parent
+        self.weight = weight
+        self.type = ObjectiveType.get(type)
+        self.target = target
+
+    @staticmethod
+    def from_dict(d):
+        """Parses a mission objective from a normalized JSON dictionary."""
+        return MissionObjective(
+                name = d.get("name", None),
+                parent = d.get("parent", None),
+                weight = d.get("weight", None),
+                type = d.get("type", None),
+                target = d.get("target", None),
+                _id = d.get("@id", None)
+        )
+
+class ObjectiveType(str, Enum):
+    """Enumeration of recognized objective types."""
+    MAX = "MAX"
+    MIN = "MIN"
+    TAR = "TAR"
+
+    @staticmethod
+    def get(key):
+        """Attempts to parse a objective type from a string, otherwise returns None."""
+        if isinstance(key, ObjectiveType):
+            return key
+        elif isinstance(key, list):
+            return list(map(lambda e: ObjectiveType.get(e), key))
+        else:
+            try: return ObjectiveType(key.upper())
+            except: return None
 
 class DesignSpace(Entity):
     """Specification of fixed and variable quantities for a space mission.

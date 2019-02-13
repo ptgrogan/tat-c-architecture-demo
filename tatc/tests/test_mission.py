@@ -13,7 +13,7 @@ from tatc import *
 
 class TestMissionConcept(unittest.TestCase):
     def test_from_json_basic(self):
-        o = MissionConcept.from_json('{"name": "Sustainable Land Imaging", "acronym": "SLI", "agency": {"agencyType": "Government"}, "start": "2017-08-01T00:00:00Z", "duration": "P0Y0M90D", "target": {"latitude": {"minValue": 35, "maxValue": 45}, "longitude": {"minValue": -115, "maxValue": -100}}, "objects": ["SUN"], "objectives": ["test"]}')
+        o = MissionConcept.from_json('{"name": "Sustainable Land Imaging", "acronym": "SLI", "agency": {"agencyType": "Government"}, "start": "2017-08-01T00:00:00Z", "duration": "P0Y0M90D", "target": {"latitude": {"minValue": 35, "maxValue": 45}, "longitude": {"minValue": -115, "maxValue": -100}}, "objects": ["SUN"], "objectives": [{"name": "test"}]}')
         self.assertEqual(o.name, "Sustainable Land Imaging")
         self.assertEqual(o.acronym, "SLI")
         self.assertIsInstance(o.agency, Agency)
@@ -29,12 +29,12 @@ class TestMissionConcept(unittest.TestCase):
         self.assertEqual(o.target.longitude.minValue, -115)
         self.assertEqual(o.target.longitude.maxValue, -100)
         self.assertEqual(o.objects, ["SUN"])
-        self.assertEqual(o.objectives, ["test"])
+        self.assertEqual(o.objectives[0].name, "test")
     def test_from_json_numeric_duration(self):
         o = MissionConcept.from_json('{"start": "2017-08-01T00:00:00Z", "duration": 90}')
         self.assertEqual(isodate.parse_duration(o.duration), datetime.timedelta(days=90))
     def test_to_json_basic(self):
-        d = json.loads(MissionConcept(name="Sustainable Land Imaging", acronym="SLI", agency=Agency(agencyType=AgencyType.GOVERNMENT), start="2017-08-01T00:00:00Z", duration="P0Y0M90D", target=Region(latitude=QuantitativeValue(minValue=35,maxValue=45), longitude=QuantitativeValue(minValue=-115, maxValue=-100)), objects=["SUN"], objectives=["test"]).to_json())
+        d = json.loads(MissionConcept(name="Sustainable Land Imaging", acronym="SLI", agency=Agency(agencyType=AgencyType.GOVERNMENT), start="2017-08-01T00:00:00Z", duration="P0Y0M90D", target=Region(latitude=QuantitativeValue(minValue=35,maxValue=45), longitude=QuantitativeValue(minValue=-115, maxValue=-100)), objects=["SUN"], objectives=[MissionObjective(name="test")]).to_json())
         self.assertEqual(d.get("name"), "Sustainable Land Imaging")
         self.assertEqual(d.get("acronym"), "SLI")
         self.assertEqual(d.get("agency").get("agencyType"), "GOVERNMENT")
@@ -45,10 +45,34 @@ class TestMissionConcept(unittest.TestCase):
         self.assertEqual(d.get("target").get("longitude").get("minValue"), -115)
         self.assertEqual(d.get("target").get("longitude").get("maxValue"), -100)
         self.assertEqual(d.get("objects"), ["SUN"])
-        self.assertEqual(d.get("objectives"), ["test"])
+        self.assertEqual(d.get("objectives")[0].get("name"), "test")
     def test_to_json_numeric_duration(self):
         d = json.loads(MissionConcept(start="2017-08-01T00:00:00Z", duration=90).to_json())
         self.assertEqual(isodate.parse_duration(d.get("duration")), datetime.timedelta(days=90))
+
+class TestMissionObjective(unittest.TestCase):
+    def test_from_json_basic(self):
+        o = MissionObjective.from_json('{"name": "test", "weight": 10, "type": "MAX"}')
+        self.assertEqual(o.name, "test")
+        self.assertEqual(o.weight, 10)
+        self.assertEqual(o.type, ObjectiveType.MAX)
+    def test_to_json_basic(self):
+        d = json.loads(MissionObjective(name="test", weight=10, type=ObjectiveType.MAX).to_json())
+        self.assertEqual(d.get("name"), "test")
+        self.assertEqual(d.get("weight"), 10)
+        self.assertEqual(d.get("type"), "MAX")
+    def test_from_json_target(self):
+        o = MissionObjective.from_json('{"name": "test", "weight": 10, "type": "TAR", "target": 100}')
+        self.assertEqual(o.name, "test")
+        self.assertEqual(o.weight, 10)
+        self.assertEqual(o.type, ObjectiveType.TAR)
+        self.assertEqual(o.target, 100)
+    def test_to_json_target(self):
+        d = json.loads(MissionObjective(name="test", weight=10, type=ObjectiveType.TAR, target=100).to_json())
+        self.assertEqual(d.get("name"), "test")
+        self.assertEqual(d.get("weight"), 10)
+        self.assertEqual(d.get("type"), "TAR")
+        self.assertEqual(d.get("target"), 100)
 
 class TestDesignSpace(unittest.TestCase):
     def test_from_json_basic(self):
