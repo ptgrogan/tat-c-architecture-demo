@@ -109,25 +109,116 @@ class SearchParameters(Entity):
             nOperRepl = d.get("nOperRepl", None)
         )
 
+class AnalysisOutputs(Entity):
+    """Configuration options to filter analysis outputs based on ranges of parameters.
+
+    Attributes:
+        timeAfterStart      Elapsed time (from start of simulation).
+        timeToCoverage      Time required to cover point/target.
+        accessTime          Time periods with access to point/ground station.
+        downlinkLatency     Elapsed time from observation to downlink opportunity.
+        revisitTime         Elapsed time between subsequent access blocks.
+        repeatTime          ???
+        crossOverlap        ??? (%)
+        alongOverlap        ??? (%)
+        numPasses           Total number of passes with visibility to a point.
+        lunarPhase          ??? (deg)
+        obsZenith           Observatory zenith angle (deg) relative to a point.
+        obsAzimuth          Observatory azimuth angle (deg) relative to a point.
+        sunZenith           Sun zenith angle (deg) relative to a point.
+        sunAzimuth          Sun azimuth angle (deg) relative to a point.
+        spatialResolution   Observatory spatial resolution (m).
+        crossSwath          Observatory swath width (km) in the cross-track direction.
+        alongSwath          Observatory swath width (km) in the along-track direction.
+        obsLatitude         Observatory latitude (deg).
+        obsLongitude        Observatory longitude (deg).
+        obsAltitude         Observatory altitude (deg).
+        objZenith           Object ??? zenith angle (deg) relative to a point.
+        objAzimuth          Object ??? azimuth angle (deg) relative to a point.
+
+    """
+    def __init__(self, timeAfterStart=None, timeToCoverage=True, accessTime=True,
+            downlinkLatency=None, revisitTime=None, repeatTime=None,
+            crossOverlap=None, alongOverlap=None, numPasses=None, lunarPhase=None,
+            obsZenith=None, obsAzimuth=None, sunZenith=None, sunAzimuth=None,
+            spatialResolution=None, crossSwath=None, alongSwath=None,
+            obsLatitude=None, obsLongitude=None, objZenith=None, objAzimuth=None,
+            objRange=None, _id=None):
+        self.timeAfterStart = timeAfterStart
+        self.timeToCoverage = timeToCoverage
+        self.accessTime = accessTime
+        self.downlinkLatency = downlinkLatency
+        self.revisitTime = revisitTime
+        self.repeatTime = repeatTime
+        self.crossOverlap = crossOverlap
+        self.alongOverlap = alongOverlap
+        self.numPasses = numPasses
+        self.lunarPhase = lunarPhase
+        self.obsZenith = obsZenith
+        self.obsAzimuth = obsAzimuth
+        self.sunZenith = sunZenith
+        self.sunAzimuth = sunAzimuth
+        self.spatialResolution = spatialResolution
+        self.crossSwath = crossSwath
+        self.alongSwath = alongSwath
+        self.obsLatitude = obsLatitude
+        self.obsLongitude = obsLongitude
+        self.objZenith = objZenith
+        self.objAzimuth = objAzimuth
+        self.objRange = objRange
+        super(AnalysisOutputs,self).__init__(_id, "AnalysisOutputs")
+
+    @staticmethod
+    def from_dict(d):
+        """Parses analysis outputs from a normalized JSON dictionary."""
+        return AnalysisOutputs(
+            timeAfterStart = d.get("timeAfterStart", None),
+            timeToCoverage = d.get("timeToCoverage", None),
+            accessTime = d.get("accessTime", None),
+            downlinkLatency = d.get("downlinkLatency", None),
+            revisitTime = d.get("revisitTime", None),
+            repeatTime = d.get("repeatTime", None),
+            crossOverlap = d.get("crossOverlap", None),
+            alongOverlap = d.get("alongOverlap", None),
+            numPasses = d.get("numPasses", None),
+            lunarPhase = d.get("lunarPhase", None),
+            obsZenith = d.get("obsZenith", None),
+            obsAzimuth = d.get("obsAzimuth", None),
+            sunZenith = d.get("sunZenith", None),
+            sunAzimuth = d.get("sunAzimuth", None),
+            spatialResolution = d.get("spatialResolution", None),
+            crossSwath = d.get("crossSwath", None),
+            alongSwath = d.get("alongSwath", None),
+            obsLatitude = d.get("obsLatitude", None),
+            obsLongitude = d.get("obsLongitude", None),
+            objZenith = d.get("objZenith", None),
+            objAzimuth = d.get("objAzimuth", None),
+            objRange = d.get("objRange", None)
+        )
+
 class AnalysisSettings(Entity):
     """Configuration options specific to TAT-C analysis tool.
 
     Attributes:
         propagationFidelity     Configures fidelity of the orbital propagator.
         includePropulsion       Toggles satellite propulsion on or off.
+        outputs                 List of intermediate or internal outputs to
+                                toggle on or off or specify bounds.
         searchStrategy          Specifies presferences for the search.
                                 Recognized case-insensitive values include:
                                     FF (full factorial, default)
                                     GA (genetic algorithm)
                                     KDO (knowledge-driven optimization)
+        searchParameters        Parameters for the intelligent search strategy.
     """
 
     def __init__(self, propagationFidelity=None, includePropulsion=None,
-            searchStrategy="FF", searchParameters=None, _id=None):
+            outputs=None, searchStrategy="FF", searchParameters=None, _id=None):
         """Initialize a tradespace search object.
         """
         self.propagationFidelity = propagationFidelity
         self.includePropulsion = includePropulsion
+        self.outputs = outputs
         self.searchStrategy = SearchStrategy.get(searchStrategy)
         self.searchParameters = searchParameters
         super(AnalysisSettings,self).__init__(_id, "AnalysisSettings")
@@ -138,6 +229,7 @@ class AnalysisSettings(Entity):
         return AnalysisSettings(
                 propagationFidelity = d.get("propagationFidelity", None),
                 includePropulsion = d.get("includePropulsion", None),
+                outputs = AnalysisOutputs.from_json(d.get("outputs", None)),
                 searchStrategy = d.get("searchStrategy", "FF"),
                 searchParameters = SearchParameters.from_json(d.get("searchParameters", None)),
                 _id = d.get("@id", None)
