@@ -2,6 +2,9 @@ from tatc import TradespaceSearch
 import argparse
 import os, errno
 
+import orbits_proxy
+import cost_risk_proxy
+
 def execute(in_file, out_dir):
     """Executes the example tradespace search executive."""
     search = TradespaceSearch.from_json(in_file)
@@ -17,6 +20,10 @@ def execute(in_file, out_dir):
                 raise
         with open(os.path.join(dir_path, '{0}.json'.format(arch_label)), 'w') as outfile:
             architecture.to_json(outfile, indent=2)
+        in_file.seek(0) # reset reading from start of file
+        orbits_proxy.execute(in_file, dir_path)
+        in_file.seek(0) # reset reading from start of file
+        cost_risk_proxy.execute(in_file, dir_path)
 
 class readable_dir(argparse.Action):
     """Defines a custom argparse Action to identify a readable directory."""
