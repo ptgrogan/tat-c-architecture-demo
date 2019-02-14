@@ -21,7 +21,7 @@ class MissionConcept(Entity):
     """Top-level functional description of an Earth-observing mission.
 
     Attributes:
-        name        Full name of this launch vehicle.
+        name        Full name of this mission concept.
         acronym     Acronym, initialism, or abbreviation.
         agency      Designer, provider, or operator of this entity.
         start       Mission start in ISO-8601 datetime format.
@@ -87,7 +87,7 @@ class MissionObjective(Entity):
                         MAX (maximize)
                         MIN (minimize)
                         TAR (target)
-        Target      Target value for the objective. Required for TAR type only.
+        target      Target value for the objective. Required for TAR type only.
     """
 
     def __init__(self, name=None, parent=None, weight=None, type=None,

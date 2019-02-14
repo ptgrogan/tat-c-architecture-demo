@@ -16,15 +16,21 @@ class LaunchVehicle(Entity):
     """An entity delivering satellites to orbit.
 
     Attributes:
-        name        Full name of this launch vehicle.
-        acronym     Acronym, initialism, or abbreviation.
-        agency      Designer, provider, or operator of this entity.
+        name            Full name of this launch vehicle.
+        acronym         Acronym, initialism, or abbreviation.
+        agency          Designer, provider, or operator of this entity.
         payloadMass     Maximum total mass (kg) available for payload.
         payloadVolume   Maximum total volume (m3) available for payload.
-        dryMass     Mass of the entity (kg) without any consumable propellant.
-        propellantMass  Maximum total mass (kg) available for propellantself.
+        dryMass         Mass of the entity (kg) without any consumable
+                        propellant.
+        propellantMass  Maximum total mass (kg) available for propellant.
         specificImpulse Measure of efficiency computed as the total impulse per
-                    unit of propellant (s).
+                        unit of propellant (s).
+        massToLEO       Maximum total mass (kg) transportable to low Earth
+                        orbit.
+        reliability     Probability of launch success.
+        cost            Cost per launch ($).
+        meanTimeBetweenLaunches     Average time duration between launches.
     """
 
     def __init__(self, name=None, acronym=None, agency=None, payloadMass=None,
