@@ -16,7 +16,7 @@ class LaunchVehicle(Entity):
     """An entity delivering satellites to orbit.
 
     Attributes:
-        name            Full name of this launch vehicle.
+        name            Full name of this entity.
         acronym         Acronym, initialism, or abbreviation.
         agency          Designer, provider, or operator of this entity.
         payloadMass     Maximum total mass (kg) available for payload.

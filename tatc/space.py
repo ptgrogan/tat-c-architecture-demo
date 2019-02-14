@@ -38,7 +38,7 @@ class Satellite(Entity):
     """An entity orbiting the Earth in support of mission objectives.
 
     Attributes:
-        name        Full name of this satellite.
+        name        Full name of this entity.
         acronym     Acronym, initialism, or abbreviation.
         mass        Total mass (kg) including any consumable propellant or
                     gases.

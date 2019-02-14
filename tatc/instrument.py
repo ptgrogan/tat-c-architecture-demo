@@ -19,7 +19,7 @@ class Instrument(Entity):
     """A payload component that performs scientific observation functions.
 
     Attributes:
-        name        Full name of this instrument.
+        name        Full name of this entity.
         acronym     Acronym, initialism, or abbreviation.
         agency      Designer, provider, or operator of this entity.
         mass        Total mass (kg) of this entity including any consumable

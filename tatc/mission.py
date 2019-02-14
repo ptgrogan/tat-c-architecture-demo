@@ -21,7 +21,7 @@ class MissionConcept(Entity):
     """Top-level functional description of an Earth-observing mission.
 
     Attributes:
-        name        Full name of this mission concept.
+        name        Full name of this entity.
         acronym     Acronym, initialism, or abbreviation.
         agency      Designer, provider, or operator of this entity.
         start       Mission start in ISO-8601 datetime format.

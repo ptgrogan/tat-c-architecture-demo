@@ -44,7 +44,7 @@ class GroundStation(Entity):
     to satellites.
 
     Attributes:
-        name        Full name of this launch vehicle.
+        name        Full name of this entity.
         acronym     Acronym, initialism, or abbreviation.
         agency      Designer, provider, or operator of this entity.
         latitude    Latitude (decimal degrees) with respect to the WGS 84
@@ -90,7 +90,7 @@ class GroundNetwork(Entity):
     """A network of ground stations providing communication services.
 
     Attributes:
-        name        Full name of this launch vehicle.
+        name        Full name of this entity.
         acronym     Acronym, initialism, or abbreviation.
         agency      Designer, provider, or operator of this entity.
         numberStations    Number of ground stations participating in the network.

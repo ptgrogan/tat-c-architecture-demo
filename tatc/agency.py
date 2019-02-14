@@ -20,7 +20,7 @@ class Agency(Entity):
     Attributes:
         agencyType  Type of agency. Recognized values include: ACADEMIC,
                     COMMERCIAL, GOVERNMENT.
-        name        Full name of this agencyself.
+        name        Full name of this entity.
         acronym     Acronym, initialism, or abbreviation.
     """
 
