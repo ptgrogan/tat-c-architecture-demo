@@ -117,7 +117,21 @@ class Entity(object):
         # otherwise return default hash from superclass
         return super(Entity, self).__hash__()
 
-class CommunicationBand(str, Enum):
+class EnumEntity(str, Enum):
+    """Enumeration of recognized types."""
+
+    @classmethod
+    def get(cls, key):
+        """Attempts to parse a type from a string, otherwise returns None."""
+        if isinstance(key, cls):
+            return key
+        elif isinstance(key, list):
+            return list(map(lambda e: cls.get(e), key))
+        else:
+            try: return cls(key.upper())
+            except: return None
+
+class CommunicationBand(EnumEntity):
     """Enumeration of recognized communication bands."""
     VHF = "VHF"
     UHF = "UHF"
@@ -128,17 +142,6 @@ class CommunicationBand(str, Enum):
     KU = "KU"
     KA = "KA"
     LASER = "LASER"
-
-    @staticmethod
-    def get(key):
-        """Attempts to parse a communication band from a string, otherwise returns None."""
-        if isinstance(key, CommunicationBand):
-            return key
-        elif isinstance(key, list):
-            return list(map(lambda e: CommunicationBand.get(e), key))
-        else:
-            try: return CommunicationBand(key.upper())
-            except: return None
 
 class QuantitativeValue(Entity):
     """A quantitative value bounded by minimum and maximum values.

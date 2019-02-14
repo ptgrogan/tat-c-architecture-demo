@@ -5,9 +5,8 @@
 """
 
 import json
-from enum import Enum
 
-from .util import Entity
+from .util import Entity, EnumEntity
 from .mission import MissionConcept, DesignSpace
 
 class TradespaceSearch(Entity):
@@ -37,22 +36,11 @@ class TradespaceSearch(Entity):
                 _id = d.get("@id", None)
             )
 
-class SearchStrategy(str, Enum):
+class SearchStrategy(EnumEntity):
     """Enumeration of recognized search strategies."""
     FF = "FF"
     GA = "GA"
     KDO = "KDO"
-
-    @staticmethod
-    def get(key):
-        """Attempts to parse a search strategy from a string, otherwise returns None."""
-        if isinstance(key, SearchStrategy):
-            return key
-        elif isinstance(key, list):
-            return list(map(lambda e: SearchStrategy.get(e), key))
-        else:
-            try: return SearchStrategy(key.upper())
-            except: return None
 
 class SearchParameters(Entity):
     """Aggregates search parameters needed to set up the genetic algorithm.

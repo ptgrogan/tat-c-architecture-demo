@@ -7,11 +7,10 @@
 import json
 import isodate
 import datetime
-from enum import Enum
 from numbers import Number
 import itertools
 
-from .util import Entity
+from .util import Entity, EnumEntity
 from .agency import Agency
 from .space import Satellite, Constellation
 from .ground import GroundStation, GroundNetwork, Region
@@ -114,22 +113,11 @@ class MissionObjective(Entity):
                 _id = d.get("@id", None)
         )
 
-class ObjectiveType(str, Enum):
+class ObjectiveType(EnumEntity):
     """Enumeration of recognized objective types."""
     MAX = "MAX"
     MIN = "MIN"
     TAR = "TAR"
-
-    @staticmethod
-    def get(key):
-        """Attempts to parse a objective type from a string, otherwise returns None."""
-        if isinstance(key, ObjectiveType):
-            return key
-        elif isinstance(key, list):
-            return list(map(lambda e: ObjectiveType.get(e), key))
-        else:
-            try: return ObjectiveType(key.upper())
-            except: return None
 
 class DesignSpace(Entity):
     """Specification of fixed and variable quantities for a space mission.

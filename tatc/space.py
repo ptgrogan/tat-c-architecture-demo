@@ -7,14 +7,13 @@
 
 import json
 import math
-from enum import Enum
 from numbers import Number
 import isodate
 import datetime
 import itertools
 import copy
 
-from .util import Entity, CommunicationBand, QuantitativeRange
+from .util import Entity, EnumEntity, CommunicationBand, QuantitativeRange
 from .instrument import Instrument
 from .launch import LaunchVehicle
 
@@ -64,22 +63,11 @@ class Satellite(Entity):
                 _id = d.get("@id", None)
             )
 
-class OrbitType(str, Enum):
+class OrbitType(EnumEntity):
     """Enumeration of recognized orbit types."""
     KEPLERIAN = "KEPLERIAN"
     CIRCULAR = "CIRCULAR"
     SUN_SYNCHRONOUS = "SUN_SYNCHRONOUS"
-
-    @staticmethod
-    def get(key):
-        """Attempts to parse an orbit type from a string, otherwise returns None."""
-        if isinstance(key, OrbitType):
-            return key
-        elif isinstance(key, list):
-            return list(map(lambda e: OrbitType.get(e), key))
-        else:
-            try: return OrbitType(key.upper())
-            except: return None
 
 class Orbit(Entity):
     """An orbital trajectory about the Earth.
@@ -218,24 +206,13 @@ class Orbit(Entity):
                 _id = d.get("@id", None)
             )
 
-class ConstellationType(str, Enum):
+class ConstellationType(EnumEntity):
     """Enumeration of recognized constellation types."""
     DELTA_HOMOGENOUS = "DELTA_HOMOGENOUS"
     DELTA_HETEROGENEOUS = "DELTA_HETEROGENEOUS"
     PRECESSING = "PRECESSING"
     AD_HOC = "AD_HOC"
     TRAIN = "TRAIN"
-
-    @staticmethod
-    def get(key):
-        """Attempts to parse a constellation type from a string, otherwise returns None."""
-        if isinstance(key, ConstellationType):
-            return key
-        elif isinstance(key, list):
-            return list(map(lambda e: ConstellationType.get(e), key))
-        else:
-            try: return ConstellationType(key.upper())
-            except: return None
 
 class Constellation(Entity):
     """A set of orbital trajectories about the Earth.

@@ -5,26 +5,14 @@
 """
 
 import json
-from enum import Enum
 
-from .util import Entity
+from .util import Entity, EnumEntity
 
-class AgencyType(str, Enum):
+class AgencyType(EnumEntity):
     """Enumeration of recognized agency types."""
     ACADEMIC = "ACADEMIC"
     GOVERNMENT = "GOVERNMENT"
     COMMERCIAL = "COMMERCIAL"
-
-    @staticmethod
-    def get(key):
-        """Attempts to parse an agency type from a string, otherwise returns None."""
-        if isinstance(key, AgencyType):
-            return key
-        elif isinstance(key, list):
-            return list(map(lambda e: AgencyType.get(e), key))
-        else:
-            try: return AgencyType(key.upper())
-            except: return None
 
 class Agency(Entity):
     """An organizational entity responsible for operating a space mission or asset.
