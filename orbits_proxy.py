@@ -16,34 +16,45 @@ def execute(search_file, arch_dir, arch_file=None):
         arch = Architecture.from_json(arch_file)
     with open(os.path.join(arch_dir, 'access.csv'), 'w', newline='') as outfile:
         writer = csv.writer(outfile)
-        writer.writerow(['Lat[deg]', 'Long[deg]', 'Access From [s]', 'Access To [s]'])
-    with open(os.path.join(arch_dir, 'gbl.csv'), 'w', newline='') as outfile:
-        writer = csv.writer(outfile)
-        writer.writerow(["Time [s]", "", "TimeToCoverage [s]", "", "", "AccessTime [s]", "", "", "RevisitTime [s]", "", "", "Coverage", "NumOfPOIpasses", "", "", "Data Latency [s]", "", "", "NumGSpassesPD", "TotalDownlinkTimePD [s]", "DownlinkTimePerPass [s]", "", "", "CrossSwath[km]", "", "", "AlongSwath [km]", "", "", "SpatialResolution [m]", ""])
-        writer.writerow(["t0", "t1", "TCavg", "TCmin", "TCmax", "ATavg", "ATmin", "ATmax", "RTavg", "RTmin", "RTmax", "% Grid Covered", "PASavg", "PASmin", "PASmax", "DLavg", "DLmin", "DLmax", "PassesPerDay", "DLTimePerDay", "DLTavg", "DLTmin", "DLTmax", "CSavg", "CSmin", "CSmax", "ASavg", "ASmin", "ASmax", "SRmin", "SRmax"])
+        writer.writerow([
+            'eventIdx', 'POI index', 'Lat[deg]', 'Long[deg]',
+            'Access From [s]', 'Access To [s]'
+        ])
     with open(os.path.join(arch_dir, 'gbl.json'), 'w', newline='') as outfile:
         json.dump({
             "Time" : {"min" : 0, "max" : 0},
             "TimeToCoverage" : {"min": 0, "max": 0, "avg": 0},
             "AccessTime" : {"min": 0, "max": 0, "avg": 0},
             "RevisitTime" : {"min": 0, "max": 0, "avg": 0},
+            "ResponseTime" : {"min": 0, "max": 0, "avg": 0},
             "Coverage" : 0,
             "NumOfPOIpasses" : {"min": 0, "max": 0, "avg": 0},
             "DataLatency" : {"min": 0, "max": 0, "avg": 0},
             "NumGSpassesPD" : 0,
             "TotalDownlinkTimePD" : 0,
-            "DownlinkTimePerPass" : {"min": 0, "max": 0, "avg": 0},
-            "CrossSwath" : {"min": 0, "max": 0, "avg": 0},
-            "AlongSwath" : {"min": 0, "max": 0, "avg": 0},
-            "SpatialResolution" : {"min": 0, "max": 0}
+            "DownlinkTimePerPass" : {"min": 0, "max": 0, "avg": 0}
         }, outfile, indent=2)
     with open(os.path.join(arch_dir, 'lcl.csv'), 'w', newline='') as outfile:
         writer = csv.writer(outfile)
-        writer.writerow(["Time [s]", "", "POI", "[deg]", "[deg]", "[km]", "AccessTime [s]", "", "", "RevisitTime [s]", "", "", "TimeToCoverage [s]", "Number of Passes"])
-        writer.writerow(["t0", "t1", "POI", "lat", "lon", "alt", "ATavg", "ATmin", "ATmax", "RvTavg", "RvTmin", "RvTmax", "TCcov", "numPass"])
-    with open(os.path.join(arch_dir, 'obs.csv'), 'w', newline='') as outfile:
-        writer = csv.writer(outfile)
-        writer.writerow(["Time[s]", "Ecc[deg]", "Inc[deg]", "SMA[km]", "AOP[deg]", "RAAN[deg]", "MA[deg]", "Lat[deg]", "Lon[deg]", "Alt[km]"])
+        writer.writerow([
+            "Time [s]", "", "POI", "[deg]", "[deg]", "[km]",
+            "AccessTime [s]", "", "", "RevisitTime [s]", "", "", "ResponseTime [s]", "", "",
+            "TimeToCoverage [s]", "Number of Passes"
+        ])
+        writer.writerow([
+            "t0", "t1", "POI", "lat", "lon", "alt", "ATavg", "ATmin", "ATmax",
+            "RvTavg", "RvTmin", "RvTmax", "RpTavg", "RpTmin", "RpTmax", "TCcov", "numPass"
+        ])
+    for i, satellite in enumerate(arch.constellation[0].satellites):
+        with open(os.path.join(arch_dir, 'obs-{:05d}.csv'.format(i)), 'w', newline='') as outfile:
+            writer = csv.writer(outfile)
+            writer.writerow([
+                "Time[s]", "Ecc[deg]", "Inc[deg]", "SMA[km]", "AOP[deg]",
+                "RAAN[deg]", "MA[deg]", "Lat[deg]", "Lon[deg]", "Alt[km]"
+            ])
+        with open(os.path.join(arch_dir, 'satellite_states-{:05d}.csv'.format(i)), 'w', newline='') as outfile:
+            writer = csv.writer(outfile)
+            writer.writerow(["Time[s]", "x[km]", "y[km]", "z[km]", "vx[km/s]", "vy[km/s]", "vz[km/s]"])
 
 class readable_dir(argparse.Action):
     """Defines a custom argparse Action to identify a readable directory."""
