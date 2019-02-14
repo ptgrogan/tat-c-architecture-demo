@@ -4,6 +4,8 @@ import os, errno
 
 import orbits_proxy
 import cost_risk_proxy
+import instrument_proxy
+import launch_proxy
 
 def execute(in_file, out_dir):
     """Executes the example tradespace search executive."""
@@ -24,6 +26,10 @@ def execute(in_file, out_dir):
         orbits_proxy.execute(in_file, dir_path)
         in_file.seek(0) # reset reading from start of file
         cost_risk_proxy.execute(in_file, dir_path)
+        in_file.seek(0) # reset reading from start of file
+        instrument_proxy.execute(in_file, dir_path)
+        in_file.seek(0) # reset reading from start of file
+        launch_proxy.execute(in_file, dir_path)
 
 class readable_dir(argparse.Action):
     """Defines a custom argparse Action to identify a readable directory."""
