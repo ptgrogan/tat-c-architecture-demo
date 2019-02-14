@@ -17,6 +17,23 @@ from .util import Entity, EnumEntity, CommunicationBand, QuantitativeRange
 from .instrument import Instrument
 from .launch import LaunchVehicle
 
+class PropellantType(EnumEntity):
+    """Enumeration of recognized propellant types."""
+    COLD_GAS = "COLD_GAS"
+    SOLID = "SOLID"
+    LIQUID_MONO_PROP = "LIQUID_MONO_PROP"
+    LIQUID_BI_PROP = "LIQUID_BI_PROP"
+    HYBRID = "HYBRID"
+    ELECTROTHERMAL = "ELECTROTHERMAL"
+    ELECTROSTATIC = "ELECTROSTATIC"
+    MONO_PROP = "MONO_PROP"
+
+class StabilizationType(EnumEntity):
+    """Enumeration of recognized stabilization types."""
+    AXIS_3 = "AXIS_3"
+    SPINNING = "SPINNING"
+    GRAVITY_GRADIENT = "GRAVITY_GRADIENT"
+
 class Satellite(Entity):
     """An entity orbiting the Earth in support of mission objectives.
 
@@ -32,10 +49,21 @@ class Satellite(Entity):
                     Laser.
         payload     List of instruments carried onboard this satellite.
         orbit       Orbital trajectory of this satellite.
+        techReadinessLevel  Spacecraft technology readiness level (default: 9).
+        isGroundCommand     Command performed by ground station (default: True).
+        isSpare             Spacecraft is a spare (default: False)
+        propellantType      Type of propellant. Recognized values include:
+                                COLD_GAS, SOLID, LIQUID_MONO_PROP, LIQUID_BI_PROP
+                                HYBRID, ELECTROTHERMAL, ELECTROSTATIC,
+                                MONO_PROP (default)
+        stabilizationType   Type of spacecraft stabilization. Recognized values include:
+                                AXIS_3 (default), SPINNING, GRAVITY_GRADIENT
     """
 
     def __init__(self, name=None, acronym=None, mass=0.0, volume=0.0,
-                 power=0.0, commBand=None, payload=None, orbit=None, _id=None):
+                 power=0.0, commBand=None, payload=None, orbit=None,
+                 techReadinessLevel=9, isGroundCommand=True, isSpare=False,
+                 propellantType="MONOPROP", stabilizationType="AXIS_3", _id=None):
         """Initialize a satellite object.
         """
         self.name = name
@@ -46,6 +74,11 @@ class Satellite(Entity):
         self.commBand = commBand
         self.payload = payload
         self.orbit = orbit
+        self.techReadinessLevel = techReadinessLevel
+        self.isGroundCommand = isGroundCommand
+        self.isSpare = isSpare
+        self.propellantType = propellantType
+        self.stabilizationType = stabilizationType
         super(Satellite,self).__init__(_id, "Satellite")
 
     @staticmethod
@@ -60,6 +93,11 @@ class Satellite(Entity):
                 commBand = CommunicationBand.get(d.get("commBand", None)),
                 payload = Instrument.from_json(d.get("payload", None)),
                 orbit = Orbit.from_json(d.get("orbit", None)),
+                techReadinessLevel = d.get("techReadinessLevel", 9),
+                isGroundCommand = d.get("isGroundCommand", True),
+                isSpare = d.get("isSpare", False),
+                propellantType = d.get("propellantType", "MONO_PROP"),
+                stabilizationType = d.get("stabilizationType", "AXIS_3"),
                 _id = d.get("@id", None)
             )
 
