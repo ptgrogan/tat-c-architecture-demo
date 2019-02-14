@@ -63,7 +63,7 @@ class Satellite(Entity):
     def __init__(self, name=None, acronym=None, mass=0.0, volume=0.0,
                  power=0.0, commBand=None, payload=None, orbit=None,
                  techReadinessLevel=9, isGroundCommand=True, isSpare=False,
-                 propellantType="MONOPROP", stabilizationType="AXIS_3", _id=None):
+                 propellantType="MONO_PROP", stabilizationType="AXIS_3", _id=None):
         """Initialize a satellite object.
         """
         self.name = name
