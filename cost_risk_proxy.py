@@ -16,16 +16,16 @@ def execute(search_file, arch_dir, arch_file=None):
 
     with open(os.path.join(arch_dir, 'CostRisk_output.json'), 'w', newline='') as outfile:
         json.dump({
-        	"groundCost" : { "estimate" : 0, "fiscalYear" : 2019, "standardError" : 0 },
-        	"hardwareCost" : { "estimate" : 0, "fiscalYear" : 2019, "standardError" : 0 },
-        	"iatCost" : { "estimate" : 0, "fiscalYear" : 2019, "standardError" : 0 },
-        	"launchCost" : { "estimate" : 0, "fiscalYear" : 2019, "standardError" : 0 },
-        	"lifecycleCost" : { "estimate" : 0, "fiscalYear" : 2019, "standardError" : 0 },
-            "nonRecurringCost" : { "estimate" : 0, "fiscalYear" : 2019, "standardError" : 0 },
-            "operationsCost" : { "estimate" : 0, "fiscalYear" : 2019, "standardError" : 0 },
-            "programCost" : { "estimate" : 0, "fiscalYear" : 2019, "standardError" : 0 },
-            "recurringCost" : { "estimate" : 0, "fiscalYear" : 2019, "standardError" : 0 },
-        	"spacecraftRank" : [ { "fiscalYear" : 2019, "rank" : 0, "spacecraftIndex" : 0, "totalCost" : 0 } ],
+        	"groundCost" : { "estimate" : 0, "fiscalYear" : 0, "standardError" : 0 },
+        	"hardwareCost" : { "estimate" : 0, "fiscalYear" : 0, "standardError" : 0 },
+        	"iatCost" : { "estimate" : 0, "fiscalYear" : 0, "standardError" : 0 },
+        	"launchCost" : { "estimate" : 0, "fiscalYear" : 0, "standardError" : 0 },
+        	"lifecycleCost" : { "estimate" : 0, "fiscalYear" : 0, "standardError" : 0 },
+            "nonRecurringCost" : { "estimate" : 0, "fiscalYear" : 0, "standardError" : 0 },
+            "operationsCost" : { "estimate" : 0, "fiscalYear" : 0, "standardError" : 0 },
+            "programCost" : { "estimate" : 0, "fiscalYear" : 0, "standardError" : 0 },
+            "recurringCost" : { "estimate" : 0, "fiscalYear" : 0, "standardError" : 0 },
+        	# "spacecraftRank" : [ { "fiscalYear" : 2019, "rank" : 0, "spacecraftIndex" : 0, "totalCost" : 0 } ],
         	"systemRisk" : [
                  { "category" : "Configuration Risks", "consequence" : 0, "likelihood" : 0, "risk" : "Risk of unforseen risk arising due to lack of flight heritage" },
                  { "category" : "Configuration Risks", "consequence" : 0, "likelihood" : 0, "risk" : "Risk of 'infant mortality' significantly reducing science return (due to extended on orbit checkouts, assuming a catastrophic failure does not occur)" },
