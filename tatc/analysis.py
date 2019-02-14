@@ -52,7 +52,7 @@ class SearchParameters(Entity):
         sizeTournament  Size of the tournament selection.
         pCrossover      Probability of crossover.
         pMutation       Probability of mutation.
-        alpha           Learning rate prameter for credit updates in adaptive operator selection.
+        alpha           Learning rate parameter for credit updates in adaptive operator selection.
         beta            Learning rate paraemter for probability updates in adaptive operator selection.
         pMin            Minimum probability of selection for adaptive operator selection.
         iOperators      List of domain-independent operators.
@@ -190,9 +190,9 @@ class AnalysisSettings(Entity):
     Attributes:
         propagationFidelity     Configures fidelity of the orbital propagator.
         includePropulsion       Toggles satellite propulsion on or off.
-        outputs                 List of intermediate or internal outputs to
+        outputs                 Set of intermediate or internal outputs to
                                 toggle on or off or specify bounds.
-        searchStrategy          Specifies presferences for the search.
+        searchStrategy          Specifies preferences for the search.
                                 Recognized case-insensitive values include:
                                     FF (full factorial, default)
                                     GA (genetic algorithm)
