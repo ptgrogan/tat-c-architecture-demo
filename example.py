@@ -79,7 +79,7 @@ def build_example_tradespace_search():
             )
         ]
     )
-    settings = AnalysisSettings(propagationFidelity=0, includePropulsion=False)
+    settings = AnalysisSettings(includePropulsion=False)
     search = TradespaceSearch(mission=mission, designSpace=designSpace, settings=settings)
     return search
 
