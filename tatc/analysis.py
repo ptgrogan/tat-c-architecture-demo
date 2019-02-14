@@ -188,7 +188,6 @@ class AnalysisSettings(Entity):
     """Configuration options specific to TAT-C analysis tool.
 
     Attributes:
-        propagationFidelity     Configures fidelity of the orbital propagator.
         includePropulsion       Toggles satellite propulsion on or off.
         outputs                 Set of intermediate or internal outputs to
                                 toggle on or off or specify bounds.
@@ -200,11 +199,10 @@ class AnalysisSettings(Entity):
         searchParameters        Parameters for the intelligent search strategy.
     """
 
-    def __init__(self, propagationFidelity=None, includePropulsion=None,
-            outputs=None, searchStrategy="FF", searchParameters=None, _id=None):
+    def __init__(self, includePropulsion=None, outputs=None, searchStrategy="FF",
+            searchParameters=None, _id=None):
         """Initialize a tradespace search object.
         """
-        self.propagationFidelity = propagationFidelity
         self.includePropulsion = includePropulsion
         self.outputs = outputs
         self.searchStrategy = SearchStrategy.get(searchStrategy)
@@ -215,7 +213,6 @@ class AnalysisSettings(Entity):
     def from_dict(d):
         """Parses analysis settings from a normalized JSON dictionary."""
         return AnalysisSettings(
-                propagationFidelity = d.get("propagationFidelity", None),
                 includePropulsion = d.get("includePropulsion", None),
                 outputs = AnalysisOutputs.from_json(d.get("outputs", None)),
                 searchStrategy = d.get("searchStrategy", "FF"),
