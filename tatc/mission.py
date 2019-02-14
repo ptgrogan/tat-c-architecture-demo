@@ -34,7 +34,7 @@ class MissionConcept(Entity):
         objectives  List of mission objectives.
     """
 
-    def __init__(self, name=None, acronym=None, agency=None, start=None,
+    def __init__(self, name=None, acronym=None, agency=None, start=datetime.date.today().isoformat(),
                  end=None, duration=None, target=None, objects=None,
                  objectives=None, _id=None):
         """Initialize a mission concept object.
@@ -68,7 +68,7 @@ class MissionConcept(Entity):
                 name = d.get("name", None),
                 acronym = d.get("acronym", None),
                 agency = Agency.from_json(d.get("agency", None)),
-                start = d.get("start", None),
+                start = d.get("start", datetime.date.today().isoformat()),
                 end = d.get("end", None),
                 duration = d.get("duration", None),
                 target = Region.from_json(d.get("target", None)),
