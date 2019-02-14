@@ -49,6 +49,8 @@ def execute(search_file, arch_dir, arch_file=None):
     with open(os.path.join(arch_dir, 'gbl_optical_scanner.json'), 'w', newline='') as outfile:
         json.dump({
             "NoiseEquivalentDeltaT" : {"min": 0, "max": 0, "avg": 0},
+            "AlongTrackResolution" : {"min": 0, "max": 0, "avg": 0},
+            "CrossTrackResolution" : {"min": 0, "max": 0, "avg": 0},
             "DynamicRange" : {"min": 0, "max": 0, "avg": 0},
             "SignalToNoiseRatio" : {"min": 0, "max": 0, "avg": 0}
         }, outfile, indent=2)
@@ -56,11 +58,12 @@ def execute(search_file, arch_dir, arch_file=None):
         writer = csv.writer(outfile)
         writer.writerow([
             "POI index", "[deg]", "[deg]", "NoiseEquivalentDeltaT", "", "",
+            "AlongTrackResolution", "", "", "CrossTrackResolution", "", "",
             "DynamicRange", "", "", "SignalToNoiseRatio", "", ""
         ])
         writer.writerow([
             "POI", "lat", "lon", "min", "max", "avg", "min", "max", "avg",
-            "min", "max", "avg"
+            "min", "max", "avg", "min", "max", "avg", "min", "max", "avg"
         ])
     with open(os.path.join(arch_dir, 'gbl_synthetic_aperture_radar.json'), 'w', newline='') as outfile:
         json.dump({
