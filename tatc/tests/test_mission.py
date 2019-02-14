@@ -20,7 +20,6 @@ class TestMissionConcept(unittest.TestCase):
         self.assertEqual(o.agency.agencyType, AgencyType.GOVERNMENT)
         self.assertEqual(isodate.parse_datetime(o.start), isodate.parse_datetime("2017-08-01T00:00:00Z"))
         self.assertEqual(isodate.parse_duration(o.duration), isodate.parse_duration("P0Y0M90D"))
-        #self.assertEqual(isodate.parse_datetime(o.end), isodate.parse_datetime("2017-08-01T00:00:00Z") + isodate.parse_duration("P0Y0M90D"))
         self.assertIsInstance(o.target, Region)
         self.assertIsInstance(o.target.latitude, QuantitativeValue)
         self.assertEqual(o.target.latitude.minValue, 35)

@@ -25,7 +25,6 @@ class MissionConcept(Entity):
         acronym     Acronym, initialism, or abbreviation.
         agency      Designer, provider, or operator of this entity.
         start       Mission start in ISO-8601 datetime format.
-        end         Mission end in ISO-8601 datetime format.
         duration    Mission duration in ISO-8601 duration format.
         target      Target region of interest for mission objectives.
         objects     List of mission interest objects. Recognized values
@@ -33,23 +32,17 @@ class MissionConcept(Entity):
         objectives  List of mission objectives.
     """
 
-    def __init__(self, name=None, acronym=None, agency=None, start=datetime.date.today().isoformat(),
-                 end=None, duration=None, target=None, objects=None,
-                 objectives=None, _id=None):
+    def __init__(self, name=None, acronym=None, agency=None,
+                start=datetime.date.today().isoformat(), duration=None,
+                target=None, objects=None, objectives=None, _id=None):
         """Initialize a mission concept object.
         """
         self.name = name
         self.acronym = acronym if acronym else name
         self.agency = agency
         self.start = start
-        #if end is None and isinstance(start, str) and isinstance(duration, str):
-        #    self.end = (isodate.parse_datetime(start) + isodate.parse_duration(duration)).isoformat()
-        #else:
-        self.end = end
         if isinstance(duration, Number):
             self.duration = isodate.duration_isoformat(datetime.timedelta(days=duration))
-        #elif duration is None and isinstance(start, str) and isinstance(end, str):
-        #    self.duration = isodate.duration_isoformat(isodate.parse_datetime(start) - isodate.parse_datetime(end))
         else: self.duration = duration
         self.target = target
         # convert objects to list, if necessary
@@ -68,7 +61,6 @@ class MissionConcept(Entity):
                 acronym = d.get("acronym", None),
                 agency = Agency.from_json(d.get("agency", None)),
                 start = d.get("start", datetime.date.today().isoformat()),
-                end = d.get("end", None),
                 duration = d.get("duration", None),
                 target = Region.from_json(d.get("target", None)),
                 objects = d.get("objects", None),
