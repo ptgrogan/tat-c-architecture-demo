@@ -12,8 +12,7 @@ def build_example_tradespace_search():
         target=Region(
             latitude=QuantitativeValue(35, 45),
             longitude=QuantitativeValue(-115,-100)
-        ),
-        objects=["SUN"]
+        )
     )
     designSpace = DesignSpace(
         constellations=[
