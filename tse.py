@@ -15,7 +15,7 @@ def execute(in_file, out_dir):
             # ignore error if directory already exists
             if e.errno != errno.EEXIST:
                 raise
-        with open(os.path.join(dir_path, arch_label + '.json'), 'w') as outfile:
+        with open(os.path.join(dir_path, '{0}.json'.format(arch_label)), 'w') as outfile:
             architecture.to_json(outfile, indent=2)
 
 class readable_dir(argparse.Action):
