@@ -6,8 +6,14 @@
 
 import json
 
-from .util import Entity
+from .util import Entity, EnumEntity
 from .agency import Agency
+
+class MountType(EnumEntity):
+    """Enumeration of recognized instrument mount types."""
+    BODY = "BODY"
+    MAST = "MAST"
+    PROBE = "PROBE"
 
 class Instrument(Entity):
     """A payload component that performs scientific observation functions.
@@ -31,12 +37,15 @@ class Instrument(Entity):
         dataRate        Rate of data recorded (Mbps) during nominal operations.
         solarConditions     Required solar conditions during operations.
                     Recognized values include: SUNLIT, ECLIPSE.
+        techReadinessLevel  Instrument technology readiness level.
+        mountType           Type of mounting. Recognized values include:
+                                BODY (default), MAST, PROBE.
     """
 
     def __init__(self, name=None, acronym=None, agency=None, mass=None,
             volume=None, power=None, operatingWavelength=None, pixelBitDepth=None,
             fieldOfView=None, numberPixels=None, dataRate=None,
-            solarConditions=None, _id=None):
+            solarConditions=None, techReadinessLevel=9, mountType="BODY", _id=None):
         """Initialize an instrument object.
         """
         self.name = name
@@ -51,6 +60,8 @@ class Instrument(Entity):
         self.numberPixels = numberPixels
         self.dataRate = dataRate
         self.solarConditions = solarConditions
+        self.techReadinessLevel = techReadinessLevel
+        self.mountType = MountType.get(mountType)
         super(Instrument,self).__init__(_id, "Instrument")
 
     @staticmethod
@@ -69,5 +80,7 @@ class Instrument(Entity):
                 numberPixels = d.get("numberPixels", None),
                 dataRate = d.get("dataRate", None),
                 solarConditions = d.get("solarConditions", None),
+                techReadinessLevel = d.get("techReadinessLevel", 9),
+                mountType = d.get("mountType", "BODY"),
                 _id = d.get("@id", None)
             )
