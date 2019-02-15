@@ -78,7 +78,7 @@ class Entity(object):
         elif hasattr(json_doc, 'read'):
             json_doc = json.load(json_doc)
         # if pre-formatted, return directly
-        if (json_doc is None or isinstance(json_doc, Number) or isinstance(json_doc, Entity)):
+        if (json_doc is None or isinstance(json_doc, Entity)):
             return json_doc
         # if list, recursively parse each element and return mapped list
         if isinstance(json_doc, list):
@@ -162,6 +162,8 @@ class QuantitativeValue(Entity):
     @staticmethod
     def from_dict(d):
         """Parses a quantitative value from a normalized JSON dictionary."""
+        if isinstance(d, Number):
+            return d
         return QuantitativeValue(
                 minValue = d.get("minValue", None),
                 maxValue = d.get("maxValue", None),
@@ -204,6 +206,8 @@ class QuantitativeRange(Entity):
     @staticmethod
     def from_dict(d):
         """Parses a quantitative range from a normalized JSON dictionary."""
+        if isinstance(d, Number):
+            return d
         return QuantitativeRange(
                 minValue = d.get("minValue", None),
                 maxValue = d.get("maxValue", None),
