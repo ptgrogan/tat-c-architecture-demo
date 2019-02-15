@@ -16,21 +16,31 @@ def execute(search_file, arch_dir, arch_file=None):
         arch = Architecture.from_json(arch_file)
 
     ## TODO read orbital outputs
-    with open(os.path.join(arch_dir, 'coverage_and_data_metrics_basic_sensor.csv'), 'w', newline='') as outfile:
-        writer = csv.writer(outfile)
-        writer.writerow([
-            "Access From [s]", "Access To [s]", "Lat[deg]", "Lon[deg]",
-            "POI index", "eventIdx", "Coverage [T/F]", "Incidence angle [deg]",
-            "Look angle [deg]", "Observation Range [km]"
-        ])
-
-    with open(os.path.join(arch_dir, 'coverage_and_data_metrics_optical_scanner.csv'), 'w', newline='') as outfile:
-        writer = csv.writer(outfile)
-        writer.writerow([
-            "Access From [s]", "Access To [s]", "Lat[deg]", "Lon[deg]",
-            "POI index", "eventIdx", "Coverage [T/F]", "Incidence angle [deg]",
-            "Look angle [deg]", "Observation Range [km]"
-        ])
+    for i, satellite in enumerate(arch.constellation[0].satellites):
+        with open(os.path.join(arch_dir, 'coverage_basic_sensor-{:d}.csv'.format(i)), 'w', newline='') as outfile:
+            writer = csv.writer(outfile)
+            writer.writerow([
+                "Access From [s]", "Access To [s]", "Lat[deg]", "Lon[deg]",
+                "POI index", "eventIdx", "Coverage [T/F]", "Incidence angle [deg]",
+                "Look angle [deg]", "Observation Range [km]"
+            ])
+        with open(os.path.join(arch_dir, 'coverage_optical_scanner-{:d}.csv'.format(i)), 'w', newline='') as outfile:
+            writer = csv.writer(outfile)
+            writer.writerow([
+                "Access From [s]", "Access To [s]", "Lat[deg]", "Lon[deg]",
+                "POI index", "eventIdx", "Coverage [T/F]", "Noise-Equivalent Delta T",
+                "DR", "SNR", "Ground Pixel Along-Track Resolution [m]",
+                "Ground Pixel Cross-Track Resolution [m]"
+            ])
+        with open(os.path.join(arch_dir, 'coverage_synthetic_aperture_radar-{:d}.csv'.format(i)), 'w', newline='') as outfile:
+            writer = csv.writer(outfile)
+            writer.writerow([
+                "Access From [s]", "Access To [s]", "Lat[deg]", "Lon[deg]",
+                "POI index", "eventIdx", "Coverage [T/F]", "Noise-Equivalent Sigma Naught",
+                "Ground Pixel Along-Track Resolution [m]",
+                "Ground Pixel Cross-Track Resolution [m]", "Swath Width [m]",
+                "Incidence angle [deg]"
+            ])
     with open(os.path.join(arch_dir, 'gbl_basic_sensor.json'), 'w', newline='') as outfile:
         json.dump({
             "IncidenceAngle" : {"min" : 0, "max" : 0},
