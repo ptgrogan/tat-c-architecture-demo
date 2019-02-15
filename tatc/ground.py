@@ -39,6 +39,11 @@ class Region(Entity):
                 _id = d.get("@id", None)
             )
 
+GLOBAL_REGION = Region(
+    latitude=QuantitativeValue(-90,90),
+    longitude=QuantitativeValue(-180,180)
+)
+
 class GroundStation(Entity):
     """A surface facility providing uplink or downlink communication services
     to satellites.
