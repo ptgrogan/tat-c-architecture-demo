@@ -46,13 +46,13 @@ def execute(search_file, arch_dir, arch_file=None):
             "RvTavg", "RvTmin", "RvTmax", "RpTavg", "RpTmin", "RpTmax", "TCcov", "numPass"
         ])
     for i, satellite in enumerate(arch.constellation[0].satellites):
-        with open(os.path.join(arch_dir, 'obs-{:05d}.csv'.format(i)), 'w', newline='') as outfile:
+        with open(os.path.join(arch_dir, 'obs-{:d}.csv'.format(i)), 'w', newline='') as outfile:
             writer = csv.writer(outfile)
             writer.writerow([
                 "Time[s]", "Ecc[deg]", "Inc[deg]", "SMA[km]", "AOP[deg]",
                 "RAAN[deg]", "MA[deg]", "Lat[deg]", "Lon[deg]", "Alt[km]"
             ])
-        with open(os.path.join(arch_dir, 'satellite_states-{:05d}.csv'.format(i)), 'w', newline='') as outfile:
+        with open(os.path.join(arch_dir, 'satellite_states-{:d}.csv'.format(i)), 'w', newline='') as outfile:
             writer = csv.writer(outfile)
             writer.writerow(["Time[s]", "x[km]", "y[km]", "z[km]", "vx[km/s]", "vy[km/s]", "vz[km/s]"])
 
