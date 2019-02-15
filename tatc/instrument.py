@@ -119,27 +119,19 @@ class Instrument(Entity):
                     propellants or gases.
         volume      Total volume (m3) of this entity.
         power       Nominal operating power (W).
-        operatingWavelength     Wavelength (nm) of measured electromagnetic
-                                spectra.
-        pixelBitDepth   Number of bits recorded per pixel.
         orientation     Instrument orientation with respect to the
                         satellite body frame.
         fieldOfView     Instrument field of view.
-        numberPixels    Number of pixels for a completed image in the
-                        cross-track direction (orthogonal to orbital motion).
         dataRate        Rate of data recorded (Mbps) during nominal operations.
-        solarConditions     Required solar conditions during operations.
-                            Recognized values include: SUNLIT, ECLIPSE.
         techReadinessLevel  Instrument technology readiness level.
         mountType           Type of mounting. Recognized values include:
                             BODY (default), MAST, PROBE.
     """
 
     def __init__(self, name=None, acronym=None, agency=None, mass=None,
-            volume=None, power=None, operatingWavelength=None, pixelBitDepth=None,
-            orientation=Orientation(), fieldOfView=FieldOfView(),
-            numberPixels=None, dataRate=None, solarConditions=None,
-            techReadinessLevel=9, mountType="BODY", _id=None):
+            volume=None, power=None, orientation=Orientation(),
+            fieldOfView=FieldOfView(), dataRate=None, techReadinessLevel=9,
+            mountType="BODY", _id=None, _type="Instrument"):
         """Initialize an instrument object.
         """
         self.name = name
@@ -148,15 +140,12 @@ class Instrument(Entity):
         self.mass = mass
         self.volume = volume
         self.power = power
-        self.operatingWavelength = operatingWavelength
-        self.pixelBitDepth = pixelBitDepth
+        self.orientation = orientation
         self.fieldOfView = fieldOfView
-        self.numberPixels = numberPixels
         self.dataRate = dataRate
-        self.solarConditions = solarConditions
         self.techReadinessLevel = techReadinessLevel
         self.mountType = MountType.get(mountType)
-        super(Instrument,self).__init__(_id, "Instrument")
+        super(Instrument,self).__init__(_id, _type)
 
     @staticmethod
     def from_dict(d):
@@ -170,14 +159,126 @@ class Instrument(Entity):
                     mass = d.get("mass", None),
                     volume = d.get("volume", None),
                     power = d.get("power", None),
-                    operatingWavelength = d.get("operatingWavelength", None),
-                    pixelBitDepth = d.get("pixelBitDepth", None),
                     orientation = Orientation.from_json(d.get("orientation", Orientation())),
                     fieldOfView = FieldOfView.from_json(d.get("fieldOfView", FieldOfView())),
-                    numberPixels = d.get("numberPixels", None),
                     dataRate = d.get("dataRate", None),
-                    solarConditions = d.get("solarConditions", None),
                     techReadinessLevel = d.get("techReadinessLevel", 9),
                     mountType = d.get("mountType", "BODY"),
                     _id = d.get("@id", None)
                 )
+        elif type == "OpticalScanner":
+            return OpticalScanner(
+                    name = d.get("name", None),
+                    acronym = d.get("acronym", None),
+                    agency = Agency.from_json(d.get("agency", None)),
+                    mass = d.get("mass", None),
+                    volume = d.get("volume", None),
+                    power = d.get("power", None),
+                    orientation = Orientation.from_json(d.get("orientation", Orientation())),
+                    fieldOfView = FieldOfView.from_json(d.get("fieldOfView", FieldOfView())),
+                    dataRate = d.get("dataRate", None),
+                    scanTechnique = d.get("scanTechnique", None),
+                    numberDetectorsAlongTrack = d.get("numberDetectorsAlongTrack", None),
+                    numberDetectorsCrossTrack = d.get("numberDetectorsCrossTrack", None),
+                    fNumber = d.get("fNumber", None),
+                    focalLength = d.get("focalLength", None),
+                    operatingWavelength = d.get("operatingWavelength", None),
+                    bandwidth = d.get("bandwidth", None),
+                    quantumEfficiency = d.get("quantumEfficiency", None),
+                    opticalTransmissionFactor = d.get("opticalTransmissionFactor", None),
+                    numberReadOutElectrons = d.get("numberReadOutElectrons", None),
+                    targetBlackBodyTemp = d.get("targetBlackBodyTemp", None),
+                    bitsPerPixel = d.get("bitsPerPixel", None),
+                    detectorWidth = d.get("detectorWidth", None),
+                    techReadinessLevel = d.get("techReadinessLevel", 9),
+                    mountType = d.get("mountType", "BODY"),
+                    _id = d.get("@id", None)
+                )
+        elif type == "SyntheticApertureRadar":
+            return SyntheticApertureRadar(
+                    name = d.get("name", None),
+                    acronym = d.get("acronym", None),
+                    agency = Agency.from_json(d.get("agency", None)),
+                    mass = d.get("mass", None),
+                    volume = d.get("volume", None),
+                    power = d.get("power", None),
+                    orientation = Orientation.from_json(d.get("orientation", Orientation())),
+                    dataRate = d.get("dataRate", None),
+                    pulseWidth = d.get("pulseWidth", None),
+                    antennaDimensionAlongTrack = d.get("antennaDimensionAlongTrack", None),
+                    antennaDimensionCrossTrack = d.get("antennaDimensionCrossTrack", None),
+                    antennaApertureEfficiency = d.get("antennaApertureEfficiency", None),
+                    operatingFrequency = d.get("operatingFrequency", None),
+                    peakTransmitPower = d.get("peakTransmitPower", None),
+                    chirpBandwidth = d.get("chirpBandwidth", None),
+                    minPulseRepetitionFrequency = d.get("minPulseRepetitionFrequency", None),
+                    maxPulseRepetitionFrequency = d.get("maxPulseRepetitionFrequency", None),
+                    sceneNoiseTemp = d.get("sceneNoiseTemp", None),
+                    systemNoiseFigure = d.get("systemNoiseFigure", None),
+                    radarLosses = d.get("radarLosses", None),
+                    thresholdSigmaNEZ0 = d.get("thresholdSigmaNEZ0", None),
+                    techReadinessLevel = d.get("techReadinessLevel", 9),
+                    mountType = d.get("mountType", "BODY"),
+                    _id = d.get("@id", None)
+                )
+
+class ScanTechnique(EnumEntity):
+    PUSHBROOM = "PUSHBROOM"
+    WHISKBROOM = "WHISKBROOM"
+    STEP_AND_STARE = "STEP_AND_STARE"
+
+class OpticalScanner(Instrument):
+    def __init__(self, name=None, acronym=None, agency=None, mass=None,
+            volume=None, power=None, orientation=Orientation(),
+            fieldOfView=FieldOfView(), dataRate=None, scanTechnique=None,
+            numberDetectorsAlongTrack=None, numberDetectorsCrossTrack=None,
+            fNumber=None, focalLength=None, operatingWavelength=None, bandwidth=None,
+            quantumEfficiency=None, opticalTransmissionFactor=None,
+            numberReadOutElectrons=None, targetBlackBodyTemp=None, bitsPerPixel=None,
+            detectorWidth=None, techReadinessLevel=9, mountType="BODY", _id=None):
+        self.scanTechnique = ScanTechnique.get(scanTechnique)
+        self.numberDetectorsAlongTrack = numberDetectorsAlongTrack
+        self.numberDetectorsCrossTrack = numberDetectorsCrossTrack
+        self.fNumber = fNumber
+        self.focalLength = focalLength
+        self.operatingWavelength = operatingWavelength
+        self.bandwidth = bandwidth
+        self.quantumEfficiency = quantumEfficiency
+        self.opticalTransmissionFactor = opticalTransmissionFactor
+        self.numberReadOutElectrons = numberReadOutElectrons
+        self.targetBlackBodyTemp = targetBlackBodyTemp
+        self.bitsPerPixel = bitsPerPixel
+        self.detectorWidth = detectorWidth
+        super(OpticalScanner,self).__init__(name=name, acronym=acronym,
+                agency=agency, mass=mass, volume=volume, power=power,
+                orientation=orientation, fieldOfView=fieldOfView,
+                dataRate=dataRate, techReadinessLevel=techReadinessLevel,
+                mountType=mountType, _id=_id, _type="OpticalScanner")
+
+class SyntheticApertureRadar(Instrument):
+    def __init__(self, name=None, acronym=None, agency=None, mass=None,
+            volume=None, power=None, orientation=Orientation(),
+            dataRate=None, pulseWidth=None, antennaDimensionAlongTrack=None,
+            antennaDimensionCrossTrack=None, antennaApertureEfficiency=None,
+            operatingFrequency=None, peakTransmitPower=None, chirpBandwidth=None,
+            minPulseRepetitionFrequency=None, maxPulseRepetitionFrequency=None,
+            sceneNoiseTemp=None, systemNoiseFigure=None, radarLosses=None,
+            thresholdSigmaNEZ0=None, techReadinessLevel=9, mountType="BODY", _id=None):
+        self.pulseWidth = pulseWidth
+        self.antennaDimensionAlongTrack = antennaDimensionAlongTrack
+        self.antennaDimensionCrossTrack = antennaDimensionCrossTrack
+        self.antennaApertureEfficiency = antennaApertureEfficiency
+        self.operatingFrequency = operatingFrequency
+        self.peakTransmitPower = peakTransmitPower
+        self.chirpBandwidth = chirpBandwidth
+        self.minPulseRepetitionFrequency = minPulseRepetitionFrequency
+        self.maxPulseRepetitionFrequency = maxPulseRepetitionFrequency
+        self.sceneNoiseTemp = sceneNoiseTemp
+        self.systemNoiseFigure = systemNoiseFigure
+        self.radarLosses = radarLosses
+        self.thresholdSigmaNEZ0 = thresholdSigmaNEZ0
+        super(SyntheticApertureRadar,self).__init__(name=name, acronym=acronym,
+                agency=agency, mass=mass, volume=volume, power=power,
+                orientation=orientation, fieldOfView=None,
+                dataRate=dataRate, techReadinessLevel=techReadinessLevel,
+                mountType=mountType, _id=_id, _type="SyntheticApertureRadar")

@@ -37,11 +37,7 @@ def build_example_tradespace_search():
                     mass=657,
                     volume=10.016,
                     power=319,
-                    operatingWavelength=[443,482,561,655,865,1609,2201,590,1373,10900,12000],
-                    pixelBitDepth=12,
-                    fieldOfView=7.5,
-                    numberPixels=6250,
-                    solarConditions="SUNLIT"
+                    fieldOfView=15
                 )
             )
         ],
