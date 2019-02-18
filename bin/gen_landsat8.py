@@ -1,39 +1,42 @@
-from tatc import *
+import tatc
 import argparse
 
 def build_example_tradespace_search():
     """ Builds an example TradespaceSearch based on SLI mission."""
-    mission = MissionConcept(
+    mission = tatc.MissionConcept(
         name="Sustainable Land Imaging - Landsat 8",
         acronym="SLI-Landsat8",
-        agency=Agency(AgencyType.GOVERNMENT),
+        agency=tatc.Agency(tatc.AgencyType.GOVERNMENT),
         start="2017-08-01T00:00:00Z",
         duration="P0Y0M90D",
-        target=Region(
-            latitude=QuantitativeValue(35, 45),
-            longitude=QuantitativeValue(-115,-100)
+        target=tatc.Region(
+            latitude=tatc.QuantitativeValue(35, 45),
+            longitude=tatc.QuantitativeValue(-115,-100)
         )
     )
-    designSpace = DesignSpace(
+    designSpace = tatc.DesignSpace(
         constellations=[
-            Constellation(
+            tatc.Constellation(
                 constellationType="DELTA_HOMOGENOUS",
                 numberSatellites=[1,2],
                 numberPlanes=[1,2],
-                orbit=Orbit(orbitType=OrbitType.SUN_SYNCHRONOUS, altitude=705),
+                orbit=tatc.Orbit(
+                    orbitType=tatc.OrbitType.SUN_SYNCHRONOUS,
+                    altitude=705
+                )
             )
         ],
         satellites=[
-            Satellite(
+            tatc.Satellite(
                 name="Landsat 8",
                 mass=2750,
                 volume=43.2,
                 power=1550,
-                commBand=[CommunicationBand.X],
-                payload=Instrument(
+                commBand=[tatc.CommunicationBand.X],
+                payload=tatc.Instrument(
                     name="Operational Land Imager/Thermal Infrared Sensor",
                     acronym="OLI/TIRS",
-                    agency=Agency(AgencyType.GOVERNMENT),
+                    agency=tatc.Agency(tatc.AgencyType.GOVERNMENT),
                     mass=657,
                     volume=10.016,
                     power=319,
@@ -42,7 +45,7 @@ def build_example_tradespace_search():
             )
         ],
         launchers=[
-            LaunchVehicle(
+            tatc.LaunchVehicle(
                 name="AtlasV",
                 dryMass=2316,
                 propellantMass=20830,
@@ -52,7 +55,7 @@ def build_example_tradespace_search():
                 cost=130,
                 meanTimeBetweenLaunches="P0Y0M133D"
             ),
-            LaunchVehicle(
+            tatc.LaunchVehicle(
                 name="Vega",
                 dryMass=147,
                 propellantMass=550,
@@ -64,23 +67,28 @@ def build_example_tradespace_search():
             )
         ],
         groundNetworks=[
-            GroundNetwork(numberStations=1)
+            tatc.GroundNetwork(numberStations=1)
         ],
         groundStations=[
-            GroundStation(
+            tatc.GroundStation(
                 latitude=40.5974791834978,
                 longitude=-104.83875274658203,
                 elevation=1570,
-                commBand=[CommunicationBand.X]
+                commBand=[tatc.CommunicationBand.X]
             )
         ]
     )
-    settings = AnalysisSettings(includePropulsion=False)
-    search = TradespaceSearch(mission=mission, designSpace=designSpace, settings=settings)
+    settings = tatc.AnalysisSettings(includePropulsion=False)
+    search = tatc.TradespaceSearch(
+        mission=mission,
+        designSpace=designSpace,
+        settings=settings
+    )
     return search
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Writes an example tradespace search file')
+    parser = argparse.ArgumentParser(
+        description='Writes an example tradespace search file')
     parser.add_argument(
         'outfile',
         nargs = '?',

@@ -1,19 +1,16 @@
-from tatc import Architecture
-from tatc import TradespaceSearch
+import tatc
 import argparse
 import os
 import csv
 import json
 
-def execute(search_file, arch_dir, arch_file=None):
+def execute(in_file, arch_dir):
     """Executes the orbital analysis proxy."""
-    search = TradespaceSearch.from_json(search_file)
-    if arch_file is None:
-        arch_path = os.path.join(arch_dir, '{0}.json'.format(arch_dir))
-        with open(arch_path) as arch_file:
-            arch = Architecture.from_json(arch_file)
-    else:
-        arch = Architecture.from_json(arch_file)
+    in_file.seek(0) # reset reading from start of file
+    search = tatc.TradespaceSearch.from_json(in_file)
+    arch_path = os.path.join(arch_dir, 'arch.json')
+    with open(arch_path, 'r') as arch_file:
+        arch = tatc.Architecture.from_json(arch_file)
     with open(os.path.join(arch_dir, 'access.csv'), 'w', newline='') as outfile:
         writer = csv.writer(outfile)
         writer.writerow([
@@ -76,20 +73,14 @@ if __name__ == "__main__":
         description='Run orbital analysis (proxy)'
     )
     parser.add_argument(
-        'search',
+        'infile',
         type = argparse.FileType('r'),
         help = "Tradespace search input JSON file"
     )
     parser.add_argument(
         'archdir',
         action = readable_dir,
-        help = "Architecture directory to write outputs"
-    )
-    parser.add_argument(
-        'archfile',
-        nargs = '?',
-        type = argparse.FileType('r'),
-        help = "Architecture input JSON file"
+        help = "Architecture directory to read inputs/write outputs"
     )
     args = parser.parse_args()
-    execute(args.search, args.archdir, args.archfile)
+    execute(args.infile, args.archdir)

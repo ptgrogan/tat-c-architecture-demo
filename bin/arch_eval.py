@@ -1,4 +1,3 @@
-from tatc import TradespaceSearch
 import argparse
 import os, errno
 
@@ -6,25 +5,13 @@ import orbits_proxy
 import cost_risk_proxy
 import instrument_proxy
 import launch_proxy
-import arch_eval
 
 def execute(in_file, out_dir):
-    """Executes the example tradespace search executive."""
-    search = TradespaceSearch.from_json(in_file)
-    for i, architecture in enumerate(search.designSpace.generate_architectures()):
-        arch_label = 'architecture-{:}'.format(i)
-        dir_path = os.path.join(out_dir, arch_label)
-        try:
-            # try to create directory (checking in advance exposes race condition)
-            os.makedirs(dir_path)
-        except OSError as e:
-            # ignore error if directory already exists
-            if e.errno != errno.EEXIST:
-                raise
-        with open(os.path.join(dir_path, '{0}.json'.format(arch_label)), 'w') as outfile:
-            architecture.to_json(outfile, indent=2)
-        with open(os.path.join(dir_path, '{0}.json'.format(arch_label)), 'r') as archfile:
-            arch_eval.execute(archfile, dir_path)
+    """Executes the architecture evaluator."""
+    orbits_proxy.execute(in_file, out_dir)
+    instrument_proxy.execute(in_file, out_dir)
+    cost_risk_proxy.execute(in_file, out_dir)
+    launch_proxy.execute(in_file, out_dir)
 
 class readable_dir(argparse.Action):
     """Defines a custom argparse Action to identify a readable directory."""
@@ -43,7 +30,7 @@ class readable_dir(argparse.Action):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description='Run tradespace search executive'
+        description='Run architecture evaluator'
     )
     parser.add_argument(
         'infile',
@@ -51,11 +38,9 @@ if __name__ == "__main__":
         help = "Tradespace search input JSON file"
     )
     parser.add_argument(
-        'outdir',
-        nargs = '?',
+        'archdir',
         action = readable_dir,
-        default = '.',
-        help = "Architecture output directory"
+        help = "Architecture directory to read inputs/write outputs"
     )
     args = parser.parse_args()
     execute(args.infile, args.outdir)
