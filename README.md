@@ -135,3 +135,25 @@ Outputs:
     |-- arch-2/
 |-- tatc/
 ```
+
+### Tradespace Search Validator (TSV)
+
+Performs routine validation of a tradespace search document by reading JSON into Python, assigning any default values and removing unknown keys, and writing JSON back to file:
+```shell
+python bin/tsv.py infile outfile
+```
+where `infile` specifies the tradespace search input JSON file and `outdir` specifies the output directory to write architectures (defaults to `.`).
+
+Example usage:
+```shell
+echo {} > example/blank.json
+python bin/tsv.py example/blank.json example/default.json
+```
+Outputs:
+```
+|-- bin/
+|-- example/
+    |-- blank.json
+    |-- default.json
+|-- tatc/
+```
