@@ -43,4 +43,4 @@ if __name__ == "__main__":
         help = "Architecture directory to read inputs/write outputs"
     )
     args = parser.parse_args()
-    execute(args.infile, args.outdir)
+    execute(args.infile, args.archdir)
