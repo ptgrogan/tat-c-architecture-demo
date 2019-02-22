@@ -45,6 +45,7 @@ class Orientation(Entity):
         self.sideLookAngle = sideLookAngle
         super(Orientation,self).__init__(_id, "Orientation")
 
+    @staticmethod
     def from_dict(d):
         """Parses an orientation from a normalized JSON dictionary."""
         return Orientation(
@@ -83,6 +84,7 @@ class FieldOfView(Entity):
         self.crossTrackFieldOfView = crossTrackFieldOfView
         super(FieldOfView,self).__init__(_id, "FieldOfView")
 
+    @staticmethod
     def from_dict(d):
         """Parses a field of view from a normalized JSON dictionary."""
         if isinstance(d, Number):
