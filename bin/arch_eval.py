@@ -6,12 +6,28 @@ import cost_risk_proxy
 import instrument_proxy
 import launch_proxy
 
-def execute(in_file, out_dir):
+"""
+The architecture evalutator (arch_eval) coordinates the execution of analysis
+modules. It takes as an input two arguments:
+    in_file     A JSON formatted document containing the TradespaceSearch.
+    arch_dir    A readable directory containing a JSON formatted document
+                containing the Architecture (arch.json) and the location where
+                all outputs shall be written.
+
+The current execution worksflow processes the following analysis modules using
+proxy interfaces:
+ 1. Orbits (orbits_proxy)
+ 2. Instrument (instrument_proxy)
+ 3. Cost and Risk (cost_risk_proxy)
+ 4. Launch (launch_proxy)
+"""
+
+def execute(in_file, arch_dir):
     """Executes the architecture evaluator."""
-    orbits_proxy.execute(in_file, out_dir)
-    instrument_proxy.execute(in_file, out_dir)
-    cost_risk_proxy.execute(in_file, out_dir)
-    launch_proxy.execute(in_file, out_dir)
+    orbits_proxy.execute(in_file, arch_dir)
+    instrument_proxy.execute(in_file, arch_dir)
+    cost_risk_proxy.execute(in_file, arch_dir)
+    launch_proxy.execute(in_file, arch_dir)
 
 class readable_dir(argparse.Action):
     """Defines a custom argparse Action to identify a readable directory."""
