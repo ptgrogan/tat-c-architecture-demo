@@ -8,13 +8,13 @@ import launch_proxy
 
 """
 The architecture evalutator (arch_eval) coordinates the execution of analysis
-modules. It takes as an input two arguments:
+modules. It takes two arguments as inputs:
     in_file     A JSON formatted document containing the TradespaceSearch.
     arch_dir    A readable directory containing a JSON formatted document
                 containing the Architecture (arch.json) and the location where
-                all outputs shall be written.
+                all analysis outputs shall be written.
 
-The current execution worksflow processes the following analysis modules using
+The execution worksflow processes the following analysis modules using
 proxy interfaces:
  1. Orbits (orbits_proxy)
  2. Instrument (instrument_proxy)

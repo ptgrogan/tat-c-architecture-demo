@@ -4,6 +4,28 @@ import os
 import csv
 import json
 
+"""
+The orbits analysis proxy performs orbital analysis for a given architecture.
+It takes two arguments as inputs:
+    in_file     A JSON formatted document containing the TradespaceSearch.
+    arch_dir    A readable directory containing a JSON formatted document
+                containing the Architecture (arch.json) and the location where
+                all analysis outputs shall be written.
+
+Orbital analysis writes the following files to the architecture directory:
+    access.csv  CSV-formatted list of all access periods for constellation
+                member satellites.
+    gbl.json    JSON-formatted document of global performance measures for the
+                constellation.
+    lcl.csv     CSV-formatted list of all performance measures local to a point
+                of interest for the constellation.
+    obs-#.csv   CSV-formatted list of time-steamped satellite Keplerian state
+                variables (1 file per satellite, sequential integer ids).
+    satellite_states-#.csv  CSV-formatted list of time-stamped satellite
+                Cartesian state variables (1 file per satellite, sequential
+                integer ids).
+"""
+
 def execute(in_file, arch_dir):
     """Executes the orbital analysis proxy."""
     in_file.seek(0) # reset reading from start of file

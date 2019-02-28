@@ -3,6 +3,18 @@ import argparse
 import os
 import json
 
+"""
+The cost and risk analysis proxy performs cost and risk analysis for a given
+architecture. It takes two arguments as inputs:
+    in_file     A JSON formatted document containing the TradespaceSearch.
+    arch_dir    A readable directory containing a JSON formatted document
+                containing the Architecture (arch.json) and the location where
+                all analysis outputs shall be written.
+
+Cost and risk analysis writes the following file to the architecture directory:
+    CostRisk_output.json    JSON-formatted cost and risk analysis.
+"""
+
 def execute(in_file, arch_dir):
     """Executes the cost and risk analysis proxy."""
     in_file.seek(0) # reset reading from start of file

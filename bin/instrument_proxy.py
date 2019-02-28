@@ -4,6 +4,43 @@ import os
 import csv
 import json
 
+"""
+The instrument analysis proxy analyzes instrument performance for a given
+architecture. It takes two arguments as inputs:
+    in_file     A JSON formatted document containing the TradespaceSearch.
+    arch_dir    A readable directory containing a JSON formatted document
+                containing the Architecture (arch.json) and the location where
+                all analysis outputs shall be written.
+
+Instrument analysis writes the following files to the architecture directory:
+    coverage_basic_sensor-#.csv  CSV-formatted list of coverage periods
+                for a basic sensor-type instrument (1 file per satellite,
+                sequential integer ids).
+    gbl_basic_sensor.json JSON-formatted document of global performance measures
+                for the constellation assuming basic sensor-type instruments.
+    lcl_basic_sensor.csv CSV-formatted list of all performance measures local
+                to a point of interest for the constellation assuming basic
+                sensor-type instruments.
+    coverage_optical_scanner-#.csv CSV-formatted list of coverage periods
+                for an optical scanner-type instrument (1 file per satellite,
+                sequential integer ids).
+    gbl_optical_scanner.json JSON-formatted document of global performance
+                measures for the constellation assuming optical scanner-type
+                instruments.
+    lcl_optical_scanner.csv CSV-formatted list of all performance measures local
+                to a point of interest for the constellation assuming optical
+                scanner-type instruments.
+    coverage_synthetic_aperture_radar-#.csv CSV-formatted list of coverage
+                periods for a synthetic aperture radar-type instrument (1 file
+                per satellite, sequential integer ids).
+    gbl_synthetic_aperture_radar.json JSON-formatted document of global
+                performance measures for the constellation assuming synthetic
+                aperture radar-type instruments.
+    lcl_synthetic_aperture_radar.csv CSV-formatted list of all performance
+                measures local to a point of interest for the constellation
+                assuming synthetic aperture radar-type instruments.
+"""
+
 def execute(in_file, arch_dir):
     """Executes the instrument analysis proxy."""
     in_file.seek(0) # reset reading from start of file

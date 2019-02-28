@@ -4,6 +4,14 @@ import argparse
 import os
 import json
 
+"""
+The tradespace search validator (tsv) performs basic validation for a
+tradespace search JSON document by removing unused keys and assigning default
+values for missing keys. It takes two arguments as inputs:
+    in_file     A JSON formatted document containing the TradespaceSearch.
+    out_file    The new file name for the validated JSON formatted document.
+"""
+
 def execute(in_file, out_file):
     """Executes the tradespace search validator."""
     search = TradespaceSearch.from_json(in_file)

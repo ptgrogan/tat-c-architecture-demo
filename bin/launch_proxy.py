@@ -4,6 +4,18 @@ import os
 import csv
 import json
 
+"""
+The launch analysis proxy performs launch vehicle analysis for a given
+architecture. It takes two arguments as inputs:
+    in_file     A JSON formatted document containing the TradespaceSearch.
+    arch_dir    A readable directory containing a JSON formatted document
+                containing the Architecture (arch.json) and the location where
+                all analysis outputs shall be written.
+
+Launch vehicle analysis writes the following file to the architecture directory:
+    launch.json     JSON-formatted placeholder document.
+"""
+
 def execute(in_file, arch_dir):
     """Executes the launch analysis proxy."""
     in_file.seek(0) # reset reading from start of file
